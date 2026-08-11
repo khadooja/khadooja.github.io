@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khadija Alamoudi — Flutter Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0B0F1A;
+    --surface:  #111827;
+    --border:   #1E2D40;
+    --accent:   #00D4FF;
+    --accent2:  #7B61FF;
+    --text:     #E8EDF5;
+    --muted:    #6B7A99;
+    --card:     #141C2E;
+    --flutter:  #54C5F8;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 6%;
+    background: rgba(11,15,26,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem; color: var(--accent); letter-spacing: 0.05em;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 6% 5rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image:
+      linear-gradient(var(--accent) 1px, transparent 1px),
+      linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute; top: 20%; right: 10%;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute; bottom: 10%; left: 5%;
+    width: 350px; height: 350px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(123,97,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem; color: var(--accent);
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 32px; height: 1px; background: var(--accent);
+  }
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700; line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  h1 .name { color: var(--text); }
+  h1 .role {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+  }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--muted); max-width: 520px;
+    margin-bottom: 2.5rem; line-height: 1.7;
+  }
+  .hero-sub strong { color: var(--text); }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    padding: 0.85rem 2rem; border-radius: 8px;
+    background: var(--accent); color: #0B0F1A;
+    font-weight: 600; font-size: 0.95rem;
+    text-decoration: none; transition: opacity 0.2s, transform 0.2s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-secondary {
+    padding: 0.85rem 2rem; border-radius: 8px;
+    border: 1px solid var(--border); color: var(--text);
+    font-weight: 500; font-size: 0.95rem;
+    text-decoration: none; transition: border-color 0.2s, transform 0.2s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-secondary:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+  /* PLAY STORE BADGE */
+  .play-badge {
+    margin-top: 3rem;
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--border); border-radius: 12px;
+    background: var(--card); max-width: fit-content;
+  }
+  .play-badge-icon { font-size: 2rem; }
+  .play-badge-text { font-size: 0.75rem; color: var(--muted); }
+  .play-badge-text strong { display: block; font-size: 1rem; color: var(--text); }
+  .play-badge-live {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    color: #22C55E; background: rgba(34,197,94,0.1);
+    padding: 0.25rem 0.6rem; border-radius: 4px;
+    margin-left: auto;
+  }
+
+  /* STACK PILLS */
+  .stack-row {
+    display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 2.5rem;
+  }
+  .stack-pill {
+    font-family: 'Space Mono', monospace; font-size: 0.75rem;
+    padding: 0.3rem 0.75rem; border-radius: 4px;
+    border: 1px solid var(--border); color: var(--muted);
+    background: var(--surface);
+  }
+  .stack-pill.featured { border-color: var(--flutter); color: var(--flutter); }
+
+  /* SECTION */
+  section { padding: 6rem 6%; }
+  .section-label {
+    font-family: 'Space Mono', monospace; font-size: 0.75rem;
+    color: var(--accent); letter-spacing: 0.15em;
+    text-transform: uppercase; margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700; margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  .section-sub { color: var(--muted); max-width: 500px; margin-bottom: 3rem; }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem;
+    transition: border-color 0.2s, transform 0.2s;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+  .project-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .project-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-4px); }
+  .project-card:hover::before { opacity: 1; }
+  .project-card.featured-project { border-color: rgba(0,212,255,0.2); }
+  .project-card.featured-project::before { opacity: 0.5; }
+
+  .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+  .project-emoji { font-size: 2rem; }
+  .project-badges { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .badge {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    padding: 0.2rem 0.5rem; border-radius: 4px;
+  }
+  .badge-live { background: rgba(34,197,94,0.15); color: #22C55E; border: 1px solid rgba(34,197,94,0.3); }
+  .badge-featured { background: rgba(0,212,255,0.1); color: var(--accent); border: 1px solid rgba(0,212,255,0.2); }
+  .badge-open { background: rgba(123,97,255,0.1); color: var(--accent2); border: 1px solid rgba(123,97,255,0.2); }
+
+  .project-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .project-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.25rem; }
+  .project-features { list-style: none; margin-bottom: 1.5rem; }
+  .project-features li {
+    font-size: 0.85rem; color: var(--muted); padding: 0.3rem 0;
+    padding-left: 1.25rem; position: relative;
+  }
+  .project-features li::before {
+    content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.8rem;
+  }
+  .project-stack { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .tech-tag {
+    font-family: 'Space Mono', monospace; font-size: 0.68rem;
+    padding: 0.25rem 0.5rem; border-radius: 4px;
+    background: var(--surface); color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .project-links { display: flex; gap: 0.75rem; margin-top: auto; }
+  .project-link {
+    font-size: 0.82rem; text-decoration: none; padding: 0.5rem 1rem;
+    border-radius: 6px; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+  }
+  .link-github { border: 1px solid var(--border); color: var(--muted); }
+  .link-github:hover { border-color: var(--text); color: var(--text); }
+  .link-behance { border: 1px solid rgba(0,212,255,0.2); color: var(--accent); }
+  .link-behance:hover { background: rgba(0,212,255,0.08); }
+  .link-play { background: var(--accent); color: #0B0F1A; font-weight: 600; }
+  .link-play:hover { opacity: 0.85; }
+
+  /* SKILLS */
+  .skills-section { background: var(--surface); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+  .skill-group {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem;
+  }
+  .skill-group-title {
+    font-family: 'Space Mono', monospace; font-size: 0.75rem;
+    color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .skill-items { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-item {
+    font-size: 0.85rem; padding: 0.35rem 0.75rem;
+    border-radius: 6px; background: var(--surface);
+    border: 1px solid var(--border); color: var(--text);
+  }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1.25rem; }
+  .about-text p strong { color: var(--text); }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem; text-align: center;
+  }
+  .stat-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 2rem; font-weight: 700; color: var(--accent);
+    display: block; margin-bottom: 0.25rem;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); }
+
+  /* CONTACT */
+  .contact-section { background: var(--surface); }
+  .contact-box {
+    max-width: 640px; margin: 0 auto; text-align: center;
+  }
+  .contact-box p { color: var(--muted); margin-bottom: 2rem; line-height: 1.7; }
+  .contact-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .contact-link {
+    padding: 0.75rem 1.5rem; border-radius: 8px;
+    text-decoration: none; font-size: 0.9rem;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: all 0.2s;
+  }
+  .contact-link-email { background: var(--accent); color: #0B0F1A; font-weight: 600; }
+  .contact-link-email:hover { opacity: 0.9; }
+  .contact-link-li { border: 1px solid var(--border); color: var(--text); }
+  .contact-link-li:hover { border-color: var(--accent); }
+  .contact-link-gh { border: 1px solid var(--border); color: var(--text); }
+  .contact-link-gh:hover { border-color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 6%; text-align: center;
+    border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 0.82rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 0 6%; }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">KA.dev</span>
+  <div class="nav-links">
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="hero-eyebrow">Flutter Developer · Open to Remote</div>
+
+  <h1>
+    <span class="name">Khadija Alamoudi</span>
+    <span class="role">Builds apps that<br>survive the second dev.</span>
+  </h1>
+
+  <p class="hero-sub">
+    I build <strong>iOS & Android apps</strong> with Flutter — structured well enough to scale, clean enough to hand off, and real enough to ship. One app already <strong>live on Google Play.</strong>
+  </p>
+
+  <div class="hero-cta">
+    <a href="#projects" class="btn-primary">View Projects →</a>
+    <a href="#contact" class="btn-secondary">Get in Touch</a>
+  </div>
+
+  <a href="https://play.google.com/store/apps/details?id=com.khdooja.taskmate" target="_blank" class="play-badge" style="text-decoration:none;">
+    <span class="play-badge-icon">▶</span>
+    <div class="play-badge-text">
+      TaskMate
+      <strong>Available on Google Play</strong>
+    </div>
+    <span class="play-badge-live">● LIVE</span>
+  </a>
+
+  <div class="stack-row">
+    <span class="stack-pill featured">Flutter</span>
+    <span class="stack-pill featured">Dart</span>
+    <span class="stack-pill">Bloc / Cubit</span>
+    <span class="stack-pill">Riverpod</span>
+    <span class="stack-pill">Hive</span>
+    <span class="stack-pill">Firebase</span>
+    <span class="stack-pill">REST APIs</span>
+    <span class="stack-pill">Clean Architecture</span>
+    <span class="stack-pill">GitHub Actions CI/CD</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Work</div>
+  <h2 class="section-title">Projects</h2>
+  <p class="section-sub">Real apps, real architecture — not tutorial clones.</p>
+
+  <div class="projects-grid">
+
+    <!-- TaskMate -->
+    <div class="project-card featured-project">
+      <div class="project-header">
+        <span class="project-emoji">✅</span>
+        <div class="project-badges">
+          <span class="badge badge-live">● Live on Play Store</span>
+          <span class="badge badge-featured">Featured</span>
+        </div>
+      </div>
+      <div class="project-title">TaskMate</div>
+      <p class="project-desc">A full task management app shipped to production on Google Play. Offline-first with cloud sync, reminders, and calendar view.</p>
+      <ul class="project-features">
+        <li>Offline access with Sqflite + GetStorage</li>
+        <li>Real-time cloud sync via Firebase</li>
+        <li>Push notifications & reminders</li>
+        <li>Calendar view + dark mode + UI animations</li>
+      </ul>
+      <div class="project-stack">
+        <span class="tech-tag">Flutter</span>
+        <span class="tech-tag">Firebase</span>
+        <span class="tech-tag">GetX</span>
+        <span class="tech-tag">SQLite</span>
+        <span class="tech-tag">GetStorage</span>
+      </div>
+      <div class="project-links">
+        <a href="https://play.google.com/store/apps/details?id=com.khdooja.taskmate" target="_blank" class="project-link link-play">▶ Play Store</a>
+        <a href="https://github.com/khadooja/ToDo_App" target="_blank" class="project-link link-github">⌥ GitHub</a>
+      </div>
+    </div>
+
+    <!-- MindTrack -->
+    <div class="project-card">
+      <div class="project-header">
+        <span class="project-emoji">🧠</span>
+        <div class="project-badges">
+          <span class="badge badge-open">Open Source</span>
+        </div>
+      </div>
+      <div class="project-title">MindTrack</div>
+      <p class="project-desc">Mental wellness app with mood tracking, journaling, and sentiment analysis. Offline-first with automated CI/CD via GitHub Actions.</p>
+      <ul class="project-features">
+        <li>Mood tracking + journaling + reflection prompts</li>
+        <li>Weekly analytics visualized with fl_chart</li>
+        <li>Offline-first architecture using Hive</li>
+        <li>CI/CD pipeline with GitHub Actions</li>
+        <li>Sentiment analysis & streak tracking</li>
+      </ul>
+      <div class="project-stack">
+        <span class="tech-tag">Flutter</span>
+        <span class="tech-tag">Cubit</span>
+        <span class="tech-tag">Hive</span>
+        <span class="tech-tag">fl_chart</span>
+        <span class="tech-tag">GitHub Actions</span>
+        <span class="tech-tag">Clean Architecture</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/khadooja/Mood-Journal-App" target="_blank" class="project-link link-github">⌥ GitHub</a>
+        <a href="https://www.behance.net/gallery/251583607/MindTrack-AI-Powered-Mood-Journaling-App" target="_blank" class="project-link link-behance">✦ Behance</a>
+      </div>
+    </div>
+
+    <!-- Recipe App -->
+    <div class="project-card">
+      <div class="project-header">
+        <span class="project-emoji">🍽️</span>
+        <div class="project-badges">
+          <span class="badge badge-open">Open Source</span>
+        </div>
+      </div>
+      <div class="project-title">Recipe App</div>
+      <p class="project-desc">Clean Architecture recipe app built with Riverpod and Material 3 — focused on maintainability and smooth UX.</p>
+      <ul class="project-features">
+        <li>Add, manage, and view recipe details</li>
+        <li>Favorites system with empty state handling</li>
+        <li>Optimized image loading with fallback states</li>
+        <li>Material 3 + Riverpod state management</li>
+      </ul>
+      <div class="project-stack">
+        <span class="tech-tag">Flutter</span>
+        <span class="tech-tag">Riverpod</span>
+        <span class="tech-tag">Material 3</span>
+        <span class="tech-tag">Clean Architecture</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/khadooja/recipe_app" target="_blank" class="project-link link-github">⌥ GitHub</a>
+        <a href="https://www.behance.net/khadijaalamoudi" target="_blank" class="project-link link-behance">✦ Behance</a>
+      </div>
+    </div>
+
+    <!-- Chat App -->
+    <div class="project-card">
+      <div class="project-header">
+        <span class="project-emoji">💬</span>
+      </div>
+      <div class="project-title">Chat App</div>
+      <p class="project-desc">Real-time chat app with Firebase Authentication and Cloud Firestore — clean UI, instant messaging.</p>
+      <ul class="project-features">
+        <li>Real-time messaging via Cloud Firestore</li>
+        <li>Firebase Authentication (sign up / login)</li>
+        <li>Simple, intuitive UI</li>
+      </ul>
+      <div class="project-stack">
+        <span class="tech-tag">Flutter</span>
+        <span class="tech-tag">Firebase Auth</span>
+        <span class="tech-tag">Firestore</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/khadooja/AppChat" target="_blank" class="project-link link-github">⌥ GitHub</a>
+      </div>
+    </div>
+
+    <!-- Gift Planner -->
+    <div class="project-card">
+      <div class="project-header">
+        <span class="project-emoji">🎁</span>
+      </div>
+      <div class="project-title">Gift Planner</div>
+      <p class="project-desc">Gift management app with image support, statistics visualization, and a clean responsive UI following Material Design principles.</p>
+      <ul class="project-features">
+        <li>Image selection via image_picker</li>
+        <li>Statistics charts using fl_chart</li>
+        <li>Provider state management</li>
+        <li>SQLite + Firebase Firestore</li>
+      </ul>
+      <div class="project-stack">
+        <span class="tech-tag">Flutter</span>
+        <span class="tech-tag">Provider</span>
+        <span class="tech-tag">fl_chart</span>
+        <span class="tech-tag">SQLite</span>
+        <span class="tech-tag">Firebase</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/khadooja/gift-planner" target="_blank" class="project-link link-github">⌥ GitHub</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills" class="skills-section">
+  <div class="section-label">Expertise</div>
+  <h2 class="section-title">Technical Skills</h2>
+  <p class="section-sub">Everything I reach for when building production Flutter apps.</p>
+
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-title">Core</div>
+      <div class="skill-items">
+        <span class="skill-item">Flutter</span>
+        <span class="skill-item">Dart</span>
+        <span class="skill-item">Mobile Development</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">State Management</div>
+      <div class="skill-items">
+        <span class="skill-item">Flutter Bloc</span>
+        <span class="skill-item">Cubit</span>
+        <span class="skill-item">Riverpod</span>
+        <span class="skill-item">GetX</span>
+        <span class="skill-item">Provider</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Architecture</div>
+      <div class="skill-items">
+        <span class="skill-item">Clean Architecture</span>
+        <span class="skill-item">REST APIs</span>
+        <span class="skill-item">Offline-First</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">Storage & Backend</div>
+      <div class="skill-items">
+        <span class="skill-item">Hive</span>
+        <span class="skill-item">Firebase</span>
+        <span class="skill-item">Firestore</span>
+        <span class="skill-item">SQLite</span>
+        <span class="skill-item">SharedPreferences</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">DevOps & Tools</div>
+      <div class="skill-items">
+        <span class="skill-item">GitHub Actions</span>
+        <span class="skill-item">CI/CD</span>
+        <span class="skill-item">Git</span>
+        <span class="skill-item">GitHub</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">UI & Design</div>
+      <div class="skill-items">
+        <span class="skill-item">Responsive UI</span>
+        <span class="skill-item">Material 3</span>
+        <span class="skill-item">fl_chart</span>
+        <span class="skill-item">Figma</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <div class="section-label">About</div>
+      <h2 class="section-title">Building things that last.</h2>
+      <p>Most Flutter codebases look fine on day one. By month three, nobody wants to touch them. I build apps <strong>structured to survive</strong> — clean enough to hand off, architected well enough to scale.</p>
+      <p>I'm a Flutter Developer based in Yemen, one year post-graduation from Hadhramout University (BSc IT, 2025). Over the past year I've shipped <strong>TaskMate to Google Play</strong>, built MindTrack with a full CI/CD pipeline, and explored multiple state management patterns — Bloc, Riverpod, GetX, Provider — across real projects.</p>
+      <p>I care about <strong>code quality as a standard, not a bonus</strong> — and I'm looking for a remote team where that's the norm.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <span class="stat-number">1</span>
+        <span class="stat-label">App Live on Play Store</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">5</span>
+        <span class="stat-label">Projects Shipped</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">5+</span>
+        <span class="stat-label">State Management Patterns</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">CI/CD</span>
+        <span class="stat-label">GitHub Actions Pipelines</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="contact-box">
+    <div class="section-label" style="text-align:center;">Contact</div>
+    <h2 class="section-title" style="text-align:center;">Open to Remote Roles</h2>
+    <p>I'm actively looking for Flutter Developer positions — remote preferred. If you're building something real and care about clean code, let's talk.</p>
+    <div class="contact-links">
+      <a href="mailto:khadijaalamoudi169@gmail.com" class="contact-link contact-link-email">✉ Email Me</a>
+      <a href="https://www.linkedin.com/in/khadijaalamoudi-8226b4387" target="_blank" class="contact-link contact-link-li">LinkedIn</a>
+      <a href="https://github.com/khadooja" target="_blank" class="contact-link contact-link-gh">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Khadija Alamoudi · Flutter Developer · Built with care, not a template.</p>
+</footer>
+
+</body>
+</html>
