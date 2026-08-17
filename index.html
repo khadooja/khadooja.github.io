@@ -4,1010 +4,554 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Khadija Alamoudi — Flutter Developer</title>
-<meta name="description" content="Flutter Developer building production-quality iOS and Android applications with clean architecture, state management, and offline-first design.">
+<meta name="description" content="Flutter Developer building production-quality iOS and Android applications. Clean architecture, offline-first design, and real shipped products.">
+<meta name="keywords" content="Flutter Developer, Flutter, Dart, Mobile App Development, Clean Architecture, iOS, Android, Riverpod, Bloc">
 <meta property="og:title" content="Khadija Alamoudi — Flutter Developer">
-<meta property="og:description" content="Flutter apps that are clean, maintainable, and built to scale.">
+<meta property="og:description" content="Flutter apps that are clean, maintainable, and built to scale. One app live on Google Play.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://khadooja.github.io">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-/* ============================================================
-   RESET & TOKENS
-============================================================ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  background: #08090e;
-  color: #e2e4ed;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-a { color: inherit; text-decoration: none; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
-
-:root {
-  --bg:         #08090e;
-  --surface:    #0e1018;
-  --surface2:   #13151f;
-  --border:     rgba(255,255,255,0.07);
-  --border2:    rgba(255,255,255,0.13);
-  --text:       #e2e4ed;
-  --muted:      #6b7280;
-  --soft:       #9ca3af;
-  --accent:     #6366f1;
-  --accent-dim: rgba(99,102,241,0.12);
-  --accent-glow:rgba(99,102,241,0.22);
-  --green:      #22c55e;
-  --nav-h:      64px;
-}
-
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: #1e2130; border-radius: 3px; }
-
-/* ============================================================
-   NAVIGATION
-============================================================ */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  height: var(--nav-h);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 5%;
-  border-bottom: 1px solid transparent;
-  transition: background 0.3s, border-color 0.3s;
-}
-nav.scrolled {
-  background: rgba(8,9,14,0.9);
-  backdrop-filter: blur(20px);
-  border-bottom-color: var(--border);
-}
-.nav-logo {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.9rem; font-weight: 700; color: var(--text);
-}
-.nav-logo span { color: var(--accent); }
-.nav-center {
-  position: absolute; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 0.2rem;
-}
-.nav-link {
-  padding: 0.4rem 0.85rem; border-radius: 6px;
-  font-size: 0.875rem; font-weight: 500; color: var(--muted);
-  transition: color 0.2s, background 0.2s;
-}
-.nav-link:hover, .nav-link.active { color: var(--text); }
-.nav-link.active { background: var(--surface2); }
-.nav-cta {
-  display: flex; align-items: center; gap: 0.4rem;
-  padding: 0.45rem 1.1rem; border-radius: 8px;
-  background: var(--accent); color: #fff;
-  font-size: 0.85rem; font-weight: 600;
-  transition: opacity 0.2s, transform 0.2s;
-}
-.nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
-.mob-toggle {
-  display: none; flex-direction: column; gap: 5px; padding: 6px; cursor: pointer;
-}
-.mob-toggle span { display: block; width: 22px; height: 2px; background: var(--soft); border-radius: 2px; transition: all 0.3s; }
-.mob-menu {
-  display: none; position: fixed; inset: 0; z-index: 99;
-  background: rgba(8,9,14,0.97); backdrop-filter: blur(20px);
-  flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
-}
-.mob-menu.open { display: flex; }
-.mob-menu a { font-size: 1.5rem; font-weight: 700; color: var(--soft); padding: 0.75rem 2rem; transition: color 0.2s; }
-.mob-menu a:hover { color: var(--text); }
-.mob-close { position: absolute; top: 1.25rem; right: 5%; font-size: 1.5rem; color: var(--muted); }
-
-/* ============================================================
-   UTILITIES
-============================================================ */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.d1 { transition-delay: 0.1s; }
-.d2 { transition-delay: 0.2s; }
-.d3 { transition-delay: 0.3s; }
-
-.eyebrow {
-  font-family: 'Space Mono', monospace; font-size: 0.68rem;
-  letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
-  display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem;
-}
-.eyebrow::before { content:''; display:block; width:20px; height:1px; background:var(--accent); }
-.sec-title {
-  font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
-  letter-spacing: -0.03em; line-height: 1.1; color: var(--text);
-  margin-bottom: 1rem;
-}
-.sec-sub { font-size: 0.975rem; color: var(--muted); max-width: 460px; line-height: 1.75; }
-.tag {
-  font-family: 'Space Mono', monospace; font-size: 0.67rem;
-  padding: 0.22rem 0.55rem; border-radius: 5px;
-  background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
-}
-.btn-p {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  padding: 0.65rem 1.4rem; border-radius: 9px;
-  background: var(--accent); color: #fff; font-size: 0.88rem; font-weight: 600;
-  transition: opacity 0.2s, transform 0.2s;
-  box-shadow: 0 4px 20px var(--accent-glow);
-}
-.btn-p:hover { opacity: 0.88; transform: translateY(-1px); }
-.btn-g {
-  display: inline-flex; align-items: center; gap: 0.4rem;
-  padding: 0.65rem 1.2rem; border-radius: 9px;
-  border: 1px solid var(--border2); color: var(--soft); font-size: 0.88rem; font-weight: 500;
-  transition: border-color 0.2s, color 0.2s, transform 0.2s;
-}
-.btn-g:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
-
-/* ============================================================
-   HERO
-============================================================ */
-.hero {
-  min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-  padding: calc(var(--nav-h) + 5rem) 5% 5rem;
-  position: relative; overflow: hidden;
-}
-.orb {
-  position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none;
-}
-.orb1 { width: 700px; height: 700px; top: -200px; right: -200px; background: radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 70%); }
-.orb2 { width: 400px; height: 400px; bottom: 0; left: -100px; background: radial-gradient(circle, rgba(139,92,246,0.05) 0%, transparent 70%); }
-
-.hero-inner {
-  max-width: 780px; margin: 0 auto; width: 100%;
-  display: flex; flex-direction: column; gap: 0;
-  position: relative; z-index: 2;
-}
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.32rem 0.85rem; border-radius: 999px;
-  border: 1px solid var(--border2); background: var(--surface2);
-  font-size: 0.76rem; font-weight: 500; color: var(--soft);
-  margin-bottom: 1.75rem; width: fit-content;
-}
-.badge-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--green); box-shadow: 0 0 8px var(--green);
-  animation: blink 2s ease-in-out infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-.hero-name {
-  font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 800;
-  letter-spacing: -0.04em; line-height: 1.0; color: var(--text);
-  margin-bottom: 0.3rem;
-}
-.hero-role {
-  font-size: clamp(1.6rem, 4vw, 3rem); font-weight: 700;
-  letter-spacing: -0.03em; color: var(--accent); margin-bottom: 1.5rem;
-}
-.hero-tag {
-  font-size: 1.05rem; color: var(--muted); line-height: 1.8;
-  max-width: 520px; margin-bottom: 2.25rem;
-}
-.hero-tag strong { color: var(--soft); font-weight: 500; }
-.hero-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.25rem; }
-.hero-socials { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
-.hero-social {
-  display: flex; align-items: center; gap: 0.4rem;
-  font-size: 0.82rem; font-weight: 500; color: var(--muted);
-  transition: color 0.2s;
-}
-.hero-social:hover { color: var(--text); }
-.play-pill {
-  display: inline-flex; align-items: center; gap: 0.55rem;
-  padding: 0.45rem 0.9rem 0.45rem 0.55rem;
-  border: 1px solid rgba(34,197,94,0.25); border-radius: 999px;
-  background: rgba(34,197,94,0.06); color: var(--green);
-  font-size: 0.77rem; font-weight: 600; margin-top: 1rem; width: fit-content;
-}
-.play-pill-ico {
-  width: 22px; height: 22px; border-radius: 6px;
-  background: rgba(34,197,94,0.15);
-  display: flex; align-items: center; justify-content: center;
-}
-
-/* ============================================================
-   PROOF BAR
-============================================================ */
-.proof {
-  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-  background: var(--surface); padding: 2rem 5%;
-}
-.proof-inner {
-  max-width: 900px; margin: 0 auto;
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
-}
-.proof-item {
-  padding: 0 2rem; border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; gap: 0.2rem;
-}
-.proof-item:first-child { padding-left: 0; }
-.proof-item:last-child { border-right: none; }
-.proof-num {
-  font-family: 'Space Mono', monospace; font-size: 1.5rem;
-  font-weight: 700; color: var(--text);
-}
-.proof-num em { color: var(--accent); font-style: normal; }
-.proof-lbl { font-size: 0.78rem; color: var(--muted); }
-
-/* ============================================================
-   MOCKUP SCALER — THE CORE FIX
-   Each mockup is 1500×980 (or 1440×940 for chat).
-   We display it inside a 16:10-ish ratio wrapper that scales
-   the iframe using CSS transform so the FULL poster is always
-   visible — no crop, no overflow.
-============================================================ */
-.mockup-scaler {
-  /* ratio container: intrinsic ratio based on 1500:980 ≈ 65.33% */
-  position: relative;
-  width: 100%;
-  padding-top: 65.33%; /* 980/1500 * 100 */
-  overflow: hidden;
-  border-radius: 16px;
-  background: #0b0b10;
-}
-.mockup-scaler.chat-ratio {
-  padding-top: 65.28%; /* 940/1440 * 100 */
-}
-.mockup-scaler iframe {
-  position: absolute;
-  top: 0; left: 0;
-  /* iframe is always rendered at full native size then scaled down */
-  width: 1500px;
-  height: 980px;
-  border: none;
-  transform-origin: top left;
-  /* scale is set dynamically by JS, fallback here */
-  transform: scale(0.3);
-  pointer-events: none;
-}
-.mockup-scaler.chat-ratio iframe {
-  width: 1440px; height: 940px;
-}
-/* Clickable overlay for lightbox */
-.mockup-overlay {
-  position: absolute; inset: 0; z-index: 10;
-  cursor: zoom-in;
-  display: flex; align-items: flex-end; justify-content: flex-end;
-  padding: 10px;
-}
-.mockup-zoom-hint {
-  display: flex; align-items: center; gap: 0.3rem;
-  padding: 0.3rem 0.6rem; border-radius: 6px;
-  background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
-  font-size: 0.68rem; color: rgba(255,255,255,0.6);
-  font-family: 'Space Mono', monospace;
-}
-
-/* ============================================================
-   PROJECTS SECTION
-============================================================ */
-#projects { padding: 7rem 0; }
-.proj-header { max-width: 1200px; margin: 0 auto 4rem; padding: 0 5%; }
-
-/* ---- SPOTLIGHT: large project card ---- */
-.spotlight { max-width: 1200px; margin: 0 auto 1.5rem; padding: 0 5%; }
-.spotlight-card {
-  display: grid; grid-template-columns: 1fr 1fr;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 24px; overflow: hidden;
-  transition: border-color 0.3s;
-}
-.spotlight-card:hover { border-color: rgba(99,102,241,0.25); }
-
-/* left: content */
-.sp-content {
-  padding: 2.75rem; display: flex; flex-direction: column;
-  gap: 1.1rem; justify-content: center;
-}
-.sp-badge {
-  display: inline-flex; align-items: center; gap: 0.45rem;
-  padding: 0.28rem 0.7rem; border-radius: 999px; width: fit-content;
-  font-family: 'Space Mono', monospace; font-size: 0.68rem; font-weight: 700;
-  letter-spacing: 0.04em;
-}
-.sp-badge-live { border: 1px solid rgba(34,197,94,0.3); background: rgba(34,197,94,0.08); color: var(--green); }
-.sp-badge-feat { border: 1px solid rgba(124,111,205,0.3); background: rgba(124,111,205,0.08); color: #a89ce8; }
-.sp-title { font-size: 2.1rem; font-weight: 800; letter-spacing: -0.03em; color: var(--text); line-height: 1.1; }
-.sp-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
-.sp-feats { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
-.sp-feats li {
-  font-size: 0.83rem; color: var(--soft);
-  display: flex; align-items: center; gap: 0.55rem;
-}
-.sp-feats li::before { content:''; width:4px; height:4px; border-radius:50%; background:var(--accent); flex-shrink:0; }
-.sp-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-.sp-btns { display: flex; gap: 0.55rem; flex-wrap: wrap; margin-top: 0.25rem; }
-
-/* right: mockup panel */
-.sp-visual {
-  position: relative; background: #080810;
-  display: flex; align-items: center; justify-content: center;
-  padding: 2rem 1.5rem;
-  min-height: 500px;
-}
-.sp-visual .mockup-scaler {
-  /* inside spotlight, show full mockup with comfortable padding */
-  border-radius: 12px;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-/* ---- RECIPE SPOTLIGHT (reversed) ---- */
-.spotlight-reversed .sp-visual { order: -1; }
-
-/* ---- PROJECT GRID ---- */
-.proj-grid {
-  max-width: 1200px; margin: 0 auto; padding: 0 5%;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
-}
-.proj-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 20px; overflow: hidden;
-  display: flex; flex-direction: column;
-  transition: border-color 0.25s, transform 0.25s;
-  cursor: pointer;
-}
-.proj-card:hover { border-color: var(--border2); transform: translateY(-3px); }
-
-/* mockup preview inside card */
-.card-visual {
-  position: relative; background: #080810;
-  padding: 1.25rem 1rem 0;
-}
-.card-visual .mockup-scaler {
-  border-radius: 10px 10px 0 0;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-}
-.card-body {
-  padding: 1.25rem 1.25rem 1.5rem;
-  display: flex; flex-direction: column; gap: 0.55rem; flex: 1;
-}
-.card-title { font-size: 1rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
-.card-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; flex: 1; }
-.card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
-.card-links { display: flex; gap: 0.45rem; margin-top: 0.35rem; }
-.card-link {
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  padding: 0.38rem 0.75rem; border-radius: 7px;
-  border: 1px solid var(--border2); color: var(--soft);
-  font-size: 0.75rem; font-weight: 500;
-  transition: border-color 0.2s, color 0.2s;
-}
-.card-link:hover { border-color: var(--accent); color: var(--text); }
-
-/* Gift — no mockup, placeholder */
-.gift-placeholder {
-  height: 180px; background: linear-gradient(135deg, #1a1523, #1f1a2e);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
-}
-.gift-placeholder span { font-size: 3rem; }
-.gift-placeholder p { font-size: 0.75rem; color: var(--muted); font-family: 'Space Mono', monospace; }
-
-/* ============================================================
-   ABOUT
-============================================================ */
-#about {
-  padding: 7rem 0;
-  background: var(--surface);
-  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-}
-.about-grid {
-  max-width: 1200px; margin: 0 auto; padding: 0 5%;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
-}
-.about-p { font-size: 0.96rem; color: var(--muted); line-height: 1.82; margin-bottom: 1.1rem; }
-.about-p strong { color: var(--soft); font-weight: 600; }
-.about-cards { display: flex; flex-direction: column; gap: 0.85rem; margin-top: 0.5rem; }
-.about-card {
-  display: flex; align-items: flex-start; gap: 0.75rem;
-  padding: 0.9rem 1rem; border: 1px solid var(--border);
-  border-radius: 12px; background: var(--surface2);
-}
-.about-icon {
-  width: 32px; height: 32px; border-radius: 8px;
-  background: var(--accent-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.about-card-t { font-size: 0.84rem; font-weight: 600; color: var(--text); }
-.about-card-s { font-size: 0.76rem; color: var(--muted); margin-top: 0.15rem; }
-
-/* ============================================================
-   SKILLS
-============================================================ */
-#skills { padding: 7rem 0; }
-.skills-wrap { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
-.skill-groups {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: 3rem;
-}
-.skill-group {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 14px; padding: 1.4rem;
-}
-.sg-label {
-  font-family: 'Space Mono', monospace; font-size: 0.67rem;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
-  margin-bottom: 0.9rem;
-}
-.sg-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-.sg-chip {
-  font-size: 0.82rem; padding: 0.32rem 0.7rem;
-  border-radius: 7px; background: var(--surface2);
-  border: 1px solid var(--border); color: var(--soft); font-weight: 500;
-  transition: border-color 0.2s, color 0.2s;
-}
-.sg-chip:hover { border-color: var(--accent); color: var(--text); }
-
-/* ============================================================
-   CONTACT
-============================================================ */
-#contact {
-  padding: 7rem 0;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-}
-.contact-wrap { max-width: 680px; margin: 0 auto; padding: 0 5%; text-align: center; }
-.contact-h {
-  font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800;
-  letter-spacing: -0.04em; color: var(--text); line-height: 1.1; margin-bottom: 1.1rem;
-}
-.contact-sub { font-size: 0.975rem; color: var(--muted); line-height: 1.75; margin-bottom: 2.25rem; }
-.contact-socials { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1.75rem; }
-.contact-social { font-size: 0.84rem; color: var(--muted); font-weight: 500; transition: color 0.2s; }
-.contact-social:hover { color: var(--text); }
-
-/* ============================================================
-   FOOTER
-============================================================ */
-footer {
-  padding: 1.6rem 5%; border-top: 1px solid var(--border);
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
-}
-.footer-brand { font-family: 'Space Mono', monospace; font-size: 0.76rem; color: var(--muted); }
-.footer-links { display: flex; gap: 1.5rem; }
-.footer-link { font-size: 0.76rem; color: var(--muted); transition: color 0.2s; }
-.footer-link:hover { color: var(--text); }
-
-/* ============================================================
-   LIGHTBOX
-============================================================ */
-.lb-backdrop {
-  position: fixed; inset: 0; z-index: 300;
-  background: rgba(0,0,0,0.92); backdrop-filter: blur(12px);
-  display: flex; align-items: center; justify-content: center;
-  padding: 1.5rem;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.25s;
-}
-.lb-backdrop.open { opacity: 1; pointer-events: all; }
-.lb-inner {
-  position: relative; max-width: 1100px; width: 100%;
-  transform: scale(0.95); transition: transform 0.3s;
-}
-.lb-backdrop.open .lb-inner { transform: scale(1); }
-
-/* Full mockup shown in lightbox — same scaler technique */
-.lb-scaler {
-  position: relative; width: 100%;
-  padding-top: 65.33%;
-  border-radius: 16px; overflow: hidden;
-  background: #0b0b10;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.7);
-}
-.lb-scaler.chat-ratio { padding-top: 65.28%; }
-.lb-scaler iframe {
-  position: absolute; top: 0; left: 0;
-  width: 1500px; height: 980px;
-  border: none; transform-origin: top left;
-  pointer-events: none;
-}
-.lb-scaler.chat-ratio iframe { width: 1440px; height: 940px; }
-.lb-close {
-  position: absolute; top: -40px; right: 0;
-  width: 32px; height: 32px; border-radius: 8px;
-  background: rgba(255,255,255,0.1); color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem; cursor: pointer;
-  transition: background 0.2s;
-}
-.lb-close:hover { background: rgba(255,255,255,0.2); }
-.lb-label {
-  text-align: center; margin-top: 1rem;
-  font-family: 'Space Mono', monospace; font-size: 0.72rem; color: rgba(255,255,255,0.35);
-  letter-spacing: 0.08em;
-}
-
-/* ============================================================
-   RESPONSIVE
-============================================================ */
-@media (max-width: 960px) {
-  .spotlight-card { grid-template-columns: 1fr; }
-  .spotlight-reversed .sp-visual { order: 0; }
-  .sp-visual { min-height: auto; padding: 1.5rem 1.5rem 0; }
-  .proj-grid { grid-template-columns: 1fr 1fr; }
-  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .skill-groups { grid-template-columns: 1fr 1fr; }
-  .nav-center { display: none; }
-  .mob-toggle { display: flex; }
-  .nav-cta { display: none; }
-}
-@media (max-width: 600px) {
-  .proj-grid { grid-template-columns: 1fr; }
-  .skill-groups { grid-template-columns: 1fr; }
-  .proof-inner { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-  .proof-item { border-right: none; border-bottom: 1px solid var(--border); padding: 0 0 1rem; }
-  .proof-item:nth-child(odd) { border-right: 1px solid var(--border); padding-right: 1rem; }
-  footer { flex-direction: column; text-align: center; }
-  .sp-content { padding: 1.75rem; }
-  .hero-name { font-size: clamp(2.4rem, 11vw, 5.5rem); }
-}
-</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
 
-<!-- NAV -->
-<nav id="nav">
-  <a href="#" class="nav-logo">KA<span>.</span>dev</a>
-  <div class="nav-center">
-    <a href="#projects" class="nav-link">Projects</a>
-    <a href="#about" class="nav-link">About</a>
-    <a href="#skills" class="nav-link">Skills</a>
-    <a href="#contact" class="nav-link">Contact</a>
+<!-- ================================================================
+     NAVIGATION
+================================================================ -->
+<nav class="nav" id="main-nav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-brand" aria-label="Khadija Alamoudi — home">
+    Khadija<span class="nav-brand-dot">.</span>
+  </a>
+
+  <div class="nav-links" role="list">
+    <a href="#projects" class="nav-link" role="listitem">Projects</a>
+    <a href="#about"    class="nav-link" role="listitem">About</a>
+    <a href="#expertise" class="nav-link" role="listitem">Expertise</a>
+    <a href="#contact"  class="nav-link" role="listitem">Contact</a>
   </div>
-  <a href="mailto:khadijaalamoudi169@gmail.com" class="nav-cta">Let's Talk</a>
-  <button class="mob-toggle" id="mobToggle" aria-label="Open menu">
+
+  <a href="mailto:khadijaalamoudi169@gmail.com" class="nav-cta" aria-label="Contact Khadija by email">
+    Let's Talk
+  </a>
+
+  <button class="nav-burger" id="nav-burger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-mob-menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
-<div class="mob-menu" id="mobMenu">
-  <button class="mob-close" id="mobClose">✕</button>
-  <a href="#projects">Projects</a>
-  <a href="#about">About</a>
-  <a href="#skills">Skills</a>
-  <a href="#contact">Contact</a>
-  <a href="mailto:khadijaalamoudi169@gmail.com" style="color:var(--accent);margin-top:1rem">Let's Talk →</a>
+
+<!-- Mobile menu -->
+<div class="nav-mob-menu" id="nav-mob-menu" role="dialog" aria-label="Navigation menu" aria-modal="true">
+  <a href="#projects"  class="nav-mob-link">Projects</a>
+  <a href="#about"     class="nav-mob-link">About</a>
+  <a href="#expertise" class="nav-mob-link">Expertise</a>
+  <a href="#contact"   class="nav-mob-link">Contact</a>
+  <a href="mailto:khadijaalamoudi169@gmail.com" class="nav-mob-link nav-mob-cta">Let's Talk →</a>
 </div>
 
-<!-- ============================================================
+<!-- ================================================================
      HERO
-============================================================ -->
-<section class="hero">
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
+================================================================ -->
+<section class="hero" id="home" aria-label="Introduction">
+  <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+  <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+
   <div class="hero-inner">
-    <div class="hero-badge"><span class="badge-dot"></span>Open to remote opportunities</div>
+    <!-- Status -->
+    <div class="hero-status" role="status" aria-label="Currently open to remote opportunities">
+      <span class="status-dot" aria-hidden="true"></span>
+      Open to remote opportunities
+    </div>
+
+    <!-- Name + role -->
     <h1 class="hero-name">Khadija<br>Alamoudi</h1>
-    <div class="hero-role">Flutter Developer</div>
-    <p class="hero-tag">
+    <p class="hero-role">Flutter Developer</p>
+
+    <!-- Tagline -->
+    <p class="hero-tagline">
       Building iOS &amp; Android apps that are
       <strong>clean enough to maintain,</strong>
-      structured enough to scale,
+      structured enough to scale,<br>
       and <strong>polished enough to ship.</strong>
     </p>
-    <div class="hero-btns">
-      <a href="#projects" class="btn-p">View Projects <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      <a href="#contact" class="btn-g">Let's Talk</a>
+
+    <!-- CTAs -->
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">
+        View Projects
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#contact" class="btn-outline">Let's Talk</a>
     </div>
-    <div class="hero-socials">
-      <a href="https://github.com/khadooja" target="_blank" rel="noopener" class="hero-social">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-        GitHub
-      </a>
-      <span style="color:var(--border2)">·</span>
-      <a href="https://www.linkedin.com/in/khadijaalamoudi-8226b4387" target="_blank" rel="noopener" class="hero-social">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
-        LinkedIn
-      </a>
-      <span style="color:var(--border2)">·</span>
-      <a href="https://www.behance.net/khadijaalamoudi" target="_blank" rel="noopener" class="hero-social">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029H23.726zm-7.726-3h3.543c-.094-1.74-1.254-2.344-1.823-2.344-.833 0-1.582.582-1.72 2.344zM8 11.979c.001 1.338-.41 2.678-1.895 2.678-.958 0-1.806-.479-1.908-2.678H8zm0-2.979H4.233c.194-1.586 1.01-2.678 1.808-2.678C7.615 6.322 8 7.413 8 9zm0 8H2V5h5.5c1.5 0 3.5.662 3.5 3.5 0 1.5-.5 2.5-1.5 3C11 12.5 11.5 13.5 11.5 15c0 3-2 3-3.5 3z"/></svg>
-        Behance
+
+    <!-- Bottom row -->
+    <div class="hero-bottom">
+      <nav class="hero-socials" aria-label="Social links">
+        <a href="https://github.com/khadooja" target="_blank" rel="noopener noreferrer" class="hero-social">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          GitHub
+        </a>
+        <span aria-hidden="true" style="color:var(--border-hi)">·</span>
+        <a href="https://www.linkedin.com/in/khadijaalamoudi-8226b4387" target="_blank" rel="noopener noreferrer" class="hero-social">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <span aria-hidden="true" style="color:var(--border-hi)">·</span>
+        <a href="https://www.behance.net/khadijaalamoudi" target="_blank" rel="noopener noreferrer" class="hero-social">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029H23.726zm-7.726-3h3.543c-.094-1.74-1.254-2.344-1.823-2.344-.833 0-1.582.582-1.72 2.344zM8 11.979c.001 1.338-.41 2.678-1.895 2.678-.958 0-1.806-.479-1.908-2.678H8zm0-2.979H4.233c.194-1.586 1.01-2.678 1.808-2.678C7.615 6.322 8 7.413 8 9zm0 8H2V5h5.5c1.5 0 3.5.662 3.5 3.5 0 1.5-.5 2.5-1.5 3C11 12.5 11.5 13.5 11.5 15c0 3-2 3-3.5 3z"/></svg>
+          Behance
+        </a>
+      </nav>
+
+      <a href="https://play.google.com/store/apps/details?id=com.khdooja.taskmate"
+         target="_blank" rel="noopener noreferrer"
+         class="play-badge" aria-label="TaskMate on Google Play Store">
+        <span class="play-badge-icon" aria-hidden="true">
+          <svg width="10" height="12" viewBox="0 0 10 12" fill="#22C55E"><path d="M1 0l8 6-8 6V0z"/></svg>
+        </span>
+        TaskMate · Live on Google Play
       </a>
     </div>
-    <a href="https://play.google.com/store/apps/details?id=com.khdooja.taskmate" target="_blank" rel="noopener" class="play-pill">
-      <span class="play-pill-ico"><svg width="10" height="10" viewBox="0 0 24 24" fill="#22c55e"><path d="M8 5v14l11-7z"/></svg></span>
-      TaskMate · Live on Google Play
-    </a>
   </div>
 </section>
 
-<!-- PROOF BAR -->
-<div class="proof">
-  <div class="proof-inner">
-    <div class="proof-item reveal"><span class="proof-num">1</span><span class="proof-lbl">App on Google Play</span></div>
-    <div class="proof-item reveal d1"><span class="proof-num">5</span><span class="proof-lbl">Projects shipped</span></div>
-    <div class="proof-item reveal d2"><span class="proof-num">5<em>+</em></span><span class="proof-lbl">State management patterns</span></div>
-    <div class="proof-item reveal d3"><span class="proof-num" style="font-size:1rem;padding-top:0.35rem">CI/CD</span><span class="proof-lbl">GitHub Actions pipelines</span></div>
+<!-- ================================================================
+     STATS STRIP
+================================================================ -->
+<div class="stats-strip" role="region" aria-label="Portfolio highlights">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <span class="stat-num">1</span>
+      <span class="stat-label">App on Google Play</span>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <span class="stat-num">4</span>
+      <span class="stat-label">Projects shipped</span>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <span class="stat-num">CI/CD</span>
+      <span class="stat-label">GitHub Actions pipelines</span>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <span class="stat-num">BSc</span>
+      <span class="stat-label">Information Technology</span>
+    </div>
   </div>
 </div>
 
-<!-- ============================================================
+<!-- ================================================================
      PROJECTS
-============================================================ -->
-<section id="projects">
+================================================================ -->
+<section class="section projects" id="projects" aria-label="Projects">
+  <div class="section-inner">
 
-  <div class="proj-header">
-    <div class="eyebrow reveal">Projects</div>
-    <h2 class="sec-title reveal d1">Real apps.<br>Real architecture.</h2>
-    <p class="sec-sub reveal d2">Not tutorial clones. Every project was built to solve a real problem — with production-quality structure. Click any mockup to view fullscreen.</p>
-  </div>
+    <div class="section-header">
+      <p class="eyebrow reveal">Projects</p>
+      <h2 class="section-title reveal reveal-delay-1">Real apps.<br>Real architecture.</h2>
+      <p class="section-sub reveal reveal-delay-2">Not tutorial clones. Every project was built to solve a real problem — with production-quality structure. Click any mockup to view fullscreen.</p>
+    </div>
 
-  <!-- ── TASKMATE SPOTLIGHT ── -->
-  <div class="spotlight reveal">
-    <div class="spotlight-card">
-      <div class="sp-content">
-        <span class="sp-badge sp-badge-live">● Live on Google Play</span>
-        <h3 class="sp-title">TaskMate</h3>
-        <p class="sp-desc">A local-first Flutter task management app designed to keep tasks, reminders, and recurring schedules reliable — fully offline, no internet required.</p>
-        <ul class="sp-feats">
-          <li>Fully offline — SQLite via sqflite + GetStorage</li>
-          <li>Recurring tasks: daily, weekly, monthly &amp; yearly</li>
-          <li>Scheduled local notifications &amp; reminders</li>
-          <li>Persistent light / dark theme</li>
-          <li>Layered architecture: domain, data, presentation</li>
-          <li>Repository abstraction — testable business logic</li>
-          <li>Unit tests + GitHub Actions CI pipeline</li>
-          <li>English &amp; Arabic localization infrastructure</li>
-        </ul>
-        <div class="sp-tags">
-          <span class="tag">Flutter</span><span class="tag">Dart</span>
-          <span class="tag">Riverpod</span><span class="tag">SQLite</span>
-          <span class="tag">GetStorage</span><span class="tag">Local Notifications</span>
-          <span class="tag">GitHub Actions</span>
+    <!-- ── TASKMATE — FEATURED ── -->
+    <div class="proj-featured reveal">
+      <article class="proj-featured-card" aria-label="TaskMate project">
+        <div class="proj-featured-top">
+
+          <!-- Content -->
+          <div class="proj-featured-info">
+            <span class="proj-badge proj-badge-live" aria-label="Live on Google Play">● Live on Google Play</span>
+            <h3 class="proj-title">TaskMate</h3>
+            <p class="proj-tagline">
+              A local-first Flutter task management app designed to keep tasks, reminders, and recurring schedules reliable — fully offline, no internet required.
+            </p>
+            <ul class="proj-highlights" aria-label="Key highlights">
+              <li class="proj-hl">Fully offline — SQLite via sqflite</li>
+              <li class="proj-hl">Recurring tasks: daily, weekly, monthly &amp; yearly</li>
+              <li class="proj-hl">Scheduled local notifications &amp; reminders</li>
+              <li class="proj-hl">Light / dark theme persistence</li>
+              <li class="proj-hl">Domain · data · presentation layer separation</li>
+              <li class="proj-hl">Repository abstraction for testable business logic</li>
+              <li class="proj-hl">Unit tests + GitHub Actions CI</li>
+              <li class="proj-hl">English &amp; Arabic localization infrastructure</li>
+            </ul>
+            <div class="proj-stack" aria-label="Technologies used">
+              <span class="tag">Flutter</span>
+              <span class="tag">Dart</span>
+              <span class="tag">Riverpod</span>
+              <span class="tag">SQLite</span>
+              <span class="tag">GetStorage</span>
+              <span class="tag">Local Notifications</span>
+              <span class="tag">Timezone</span>
+              <span class="tag">GitHub Actions</span>
+            </div>
+            <div class="proj-btns">
+              <a href="https://play.google.com/store/apps/details?id=com.khdooja.taskmate"
+                 target="_blank" rel="noopener noreferrer"
+                 class="btn-sm btn-sm-primary" aria-label="View TaskMate on Google Play">
+                <svg width="12" height="12" viewBox="0 0 10 12" fill="currentColor" aria-hidden="true"><path d="M1 0l8 6-8 6V0z"/></svg>
+                Google Play
+              </a>
+              <a href="https://github.com/khadooja/ToDo_App"
+                 target="_blank" rel="noopener noreferrer"
+                 class="btn-sm btn-sm-ghost" aria-label="View TaskMate source on GitHub">
+                GitHub
+              </a>
+            </div>
+          </div>
+
+          <!-- Mockup -->
+          <div class="proj-featured-visual" aria-label="TaskMate app visual">
+            <div class="parallax-inner">
+              <div class="ms-wrap"
+                   data-src="./assets/mockups/taskmate.html"
+                   data-ratio="1500x980"
+                   data-title="TaskMate"
+                   role="img"
+                   aria-label="TaskMate application UI preview">
+                <button class="ms-click-area"
+                        aria-label="View TaskMate mockup fullscreen"
+                        onclick="openLightbox('./assets/mockups/taskmate.html','TaskMate','1500x980')">
+                </button>
+                <span class="ms-zoom" aria-hidden="true">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
+                  View fullscreen
+                </span>
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div class="sp-btns">
-          <a href="https://play.google.com/store/apps/details?id=com.khdooja.taskmate" target="_blank" rel="noopener" class="btn-p" style="font-size:0.82rem;padding:0.55rem 1.1rem">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            Google Play
-          </a>
-          <a href="https://github.com/khadooja/ToDo_App" target="_blank" rel="noopener" class="btn-g" style="font-size:0.82rem;padding:0.55rem 1rem">GitHub</a>
+      </article>
+    </div><!-- /taskmate featured -->
+
+    <!-- ── MINDTRACK — WIDE ROW ── -->
+    <div class="proj-grid">
+      <article class="proj-mindtrack reveal" aria-label="MindTrack project">
+        <div class="proj-mindtrack-info">
+          <span class="proj-badge proj-badge-feat">✦ Featured</span>
+          <h3 class="proj-title">MindTrack</h3>
+          <p class="proj-tagline" style="font-size:0.87rem;color:var(--text-2);line-height:1.7;">
+            Mood journaling and emotional pattern tracking app. Built offline-first with Hive and automated deployment via GitHub Actions CI/CD.
+          </p>
+          <ul class="proj-highlights" style="gap:0.4rem">
+            <li class="proj-hl">Daily mood tracking &amp; journaling</li>
+            <li class="proj-hl">Weekly analytics with fl_chart</li>
+            <li class="proj-hl">Offline-first architecture — Hive</li>
+            <li class="proj-hl">Cubit state management</li>
+            <li class="proj-hl">CI/CD via GitHub Actions</li>
+            <li class="proj-hl">Clean Architecture</li>
+          </ul>
+          <div class="proj-stack" style="margin-top:0.25rem">
+            <span class="tag">Flutter</span><span class="tag">Cubit</span>
+            <span class="tag">Hive</span><span class="tag">fl_chart</span>
+            <span class="tag">GitHub Actions</span><span class="tag">Clean Architecture</span>
+          </div>
+          <div class="proj-btns" style="margin-top:0.25rem">
+            <a href="https://www.behance.net/gallery/251583607/MindTrack-AI-Powered-Mood-Journaling-App"
+               target="_blank" rel="noopener noreferrer"
+               class="btn-sm btn-sm-primary"
+               style="background:#7C6FCD;box-shadow:none"
+               aria-label="View MindTrack on Behance">
+              ✦ Behance
+            </a>
+            <a href="https://github.com/khadooja/Mood-Journal-App"
+               target="_blank" rel="noopener noreferrer"
+               class="btn-sm btn-sm-ghost"
+               aria-label="View MindTrack source on GitHub">
+              GitHub
+            </a>
+          </div>
         </div>
-      </div>
-      <div class="sp-visual">
-        <div class="mockup-scaler" data-src="taskmate_mockup.html" data-title="TaskMate">
-          <div class="mockup-overlay" onclick="openLightbox('taskmate_mockup.html','taskmate')">
-            <span class="mockup-zoom-hint">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+
+        <div class="proj-mindtrack-visual" aria-label="MindTrack app visual">
+          <div class="ms-wrap"
+               data-src="./assets/mockups/mindtrack.html"
+               data-ratio="1500x980"
+               data-title="MindTrack"
+               role="img"
+               aria-label="MindTrack application UI preview">
+            <button class="ms-click-area"
+                    aria-label="View MindTrack mockup fullscreen"
+                    onclick="openLightbox('./assets/mockups/mindtrack.html','MindTrack','1500x980')">
+            </button>
+            <span class="ms-zoom" aria-hidden="true">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
               View fullscreen
             </span>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </article>
 
-  <!-- ── MINDTRACK SPOTLIGHT (reversed) ── -->
-  <div class="spotlight reveal">
-    <div class="spotlight-card spotlight-reversed">
-      <div class="sp-content">
-        <span class="sp-badge sp-badge-feat">✦ Featured Project</span>
-        <h3 class="sp-title">MindTrack</h3>
-        <p class="sp-desc">Mental wellness app for daily mood journaling and emotional insight. Built offline-first with Hive and automated deployment via GitHub Actions CI/CD.</p>
-        <ul class="sp-feats">
-          <li>Daily mood tracking + journaling</li>
-          <li>Weekly analytics with fl_chart</li>
-          <li>Offline-first architecture using Hive</li>
-          <li>CI/CD pipeline with GitHub Actions</li>
-          <li>Clean Architecture · Cubit state management</li>
-        </ul>
-        <div class="sp-tags">
-          <span class="tag">Flutter</span><span class="tag">Cubit</span>
-          <span class="tag">Hive</span><span class="tag">fl_chart</span>
-          <span class="tag">GitHub Actions</span><span class="tag">Clean Architecture</span>
-        </div>
-        <div class="sp-btns">
-          <a href="https://www.behance.net/gallery/251583607/MindTrack-AI-Powered-Mood-Journaling-App" target="_blank" rel="noopener" class="btn-p" style="font-size:0.82rem;padding:0.55rem 1.1rem;background:#7C6FCD;box-shadow:0 4px 20px rgba(124,111,205,0.3)">✦ Behance</a>
-          <a href="https://github.com/khadooja/Mood-Journal-App" target="_blank" rel="noopener" class="btn-g" style="font-size:0.82rem;padding:0.55rem 1rem">GitHub</a>
-        </div>
-      </div>
-      <div class="sp-visual">
-        <div class="mockup-scaler" data-src="mindtrack_mockup.html" data-title="MindTrack">
-          <div class="mockup-overlay" onclick="openLightbox('mindtrack_mockup.html','mindtrack')">
-            <span class="mockup-zoom-hint">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
-              View fullscreen
-            </span>
+      <!-- ── Recipe + Chat — two equal cards ── -->
+      <div class="proj-two-col">
+
+        <!-- Recipe App -->
+        <article class="proj-card reveal" aria-label="Recipe App project">
+          <div class="proj-card-visual">
+            <div class="ms-wrap"
+                 data-src="./assets/mockups/recipe.html"
+                 data-ratio="1500x980"
+                 data-title="Recipe App"
+                 role="img"
+                 aria-label="Recipe App UI preview">
+              <button class="ms-click-area"
+                      aria-label="View Recipe App mockup fullscreen"
+                      onclick="openLightbox('./assets/mockups/recipe.html','Recipe App','1500x980')">
+              </button>
+              <span class="ms-zoom" aria-hidden="true">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
+                Fullscreen
+              </span>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── PROJECT GRID ── -->
-  <div class="proj-grid" style="margin-top:1.5rem">
-
-    <!-- Recipe -->
-    <div class="proj-card reveal">
-      <div class="card-visual">
-        <div class="mockup-scaler" data-src="recipe_mockup.html" data-title="Recipe App">
-          <div class="mockup-overlay" onclick="openLightbox('recipe_mockup.html','recipe')">
-            <span class="mockup-zoom-hint"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg> Fullscreen</span>
+          <div class="proj-card-body">
+            <h3 class="proj-card-title">Recipe App</h3>
+            <p class="proj-card-desc">Clean Architecture recipe manager with Riverpod and Material 3. Favorites, empty-state handling, and optimized image loading.</p>
+            <div class="proj-stack">
+              <span class="tag">Flutter</span><span class="tag">Riverpod</span>
+              <span class="tag">Material 3</span><span class="tag">Clean Architecture</span>
+            </div>
+            <div class="proj-card-links">
+              <a href="https://github.com/khadooja/recipe_app" target="_blank" rel="noopener noreferrer" class="proj-card-link" aria-label="View Recipe App on GitHub">GitHub →</a>
+              <a href="https://www.behance.net/khadijaalamoudi" target="_blank" rel="noopener noreferrer" class="proj-card-link" style="border-color:rgba(255,107,53,0.2);color:#ff8a5c" aria-label="View Recipe App design on Behance">Behance →</a>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="card-title">Recipe App</div>
-        <p class="card-desc">Clean Architecture recipe manager with Riverpod and Material 3. Favorites, optimized image loading, empty state handling.</p>
-        <div class="card-tags"><span class="tag">Flutter</span><span class="tag">Riverpod</span><span class="tag">Material 3</span><span class="tag">Clean Architecture</span></div>
-        <div class="card-links">
-          <a href="https://github.com/khadooja/recipe_app" target="_blank" rel="noopener" class="card-link">GitHub →</a>
-          <a href="https://www.behance.net/khadijaalamoudi" target="_blank" rel="noopener" class="card-link" style="border-color:rgba(255,107,53,0.25);color:#ff8a5c">Behance →</a>
-        </div>
-      </div>
-    </div>
+        </article>
 
-    <!-- Chat -->
-    <div class="proj-card reveal d1">
-      <div class="card-visual" style="background:#071019">
-        <div class="mockup-scaler chat-ratio" data-src="chat_mockup.html" data-title="Chat App" data-chat="true">
-          <div class="mockup-overlay" onclick="openLightbox('chat_mockup.html','chat',true)">
-            <span class="mockup-zoom-hint"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg> Fullscreen</span>
+        <!-- Chat App -->
+        <article class="proj-card reveal reveal-delay-1" aria-label="Chat App project">
+          <div class="proj-card-visual" style="background:#06101A">
+            <div class="ms-wrap"
+                 data-src="./assets/mockups/chat.html"
+                 data-ratio="1440x940"
+                 data-title="Chat App"
+                 role="img"
+                 aria-label="Chat App UI preview">
+              <button class="ms-click-area"
+                      aria-label="View Chat App mockup fullscreen"
+                      onclick="openLightbox('./assets/mockups/chat.html','Chat App','1440x940')">
+              </button>
+              <span class="ms-zoom" aria-hidden="true">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
+                Fullscreen
+              </span>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="card-title">Chat App</div>
-        <p class="card-desc">Real-time messaging with Firebase Auth and Cloud Firestore. Instant sync, clean UI, production authentication patterns.</p>
-        <div class="card-tags"><span class="tag">Flutter</span><span class="tag">Firebase Auth</span><span class="tag">Firestore</span></div>
-        <div class="card-links">
-          <a href="https://github.com/khadooja/AppChat" target="_blank" rel="noopener" class="card-link">GitHub →</a>
-        </div>
-      </div>
-    </div>
+          <div class="proj-card-body">
+            <h3 class="proj-card-title">Chat App</h3>
+            <p class="proj-card-desc">Real-time messaging with Firebase Authentication and Cloud Firestore. Instant sync, authentication flow, and a clean conversational UI.</p>
+            <div class="proj-stack">
+              <span class="tag">Flutter</span><span class="tag">Firebase Auth</span>
+              <span class="tag">Firestore</span>
+            </div>
+            <div class="proj-card-links">
+              <a href="https://github.com/khadooja/AppChat" target="_blank" rel="noopener noreferrer" class="proj-card-link" aria-label="View Chat App on GitHub">GitHub →</a>
+            </div>
+          </div>
+        </article>
 
-    <!-- Gift Planner -->
-    <div class="proj-card reveal d2">
-      <div class="card-visual" style="padding:0">
-        <div class="gift-placeholder">
-          <span>🎁</span>
-          <p>Gift Planner</p>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="card-title">Gift Planner</div>
-        <p class="card-desc">Gift management app with image support, fl_chart statistics visualization, and Provider state management. SQLite + Firebase storage.</p>
-        <div class="card-tags"><span class="tag">Flutter</span><span class="tag">Provider</span><span class="tag">fl_chart</span><span class="tag">SQLite</span><span class="tag">Firebase</span></div>
-        <div class="card-links">
-          <a href="https://github.com/khadooja/gift-planner" target="_blank" rel="noopener" class="card-link">GitHub →</a>
-        </div>
-      </div>
-    </div>
+      </div><!-- /proj-two-col -->
 
+    </div><!-- /proj-grid -->
   </div>
 </section>
 
-<!-- ============================================================
+<!-- ================================================================
      ABOUT
-============================================================ -->
-<section id="about">
-  <div class="about-grid">
-    <div>
-      <div class="eyebrow reveal">About</div>
-      <h2 class="sec-title reveal d1">Engineering<br>with intention.</h2>
-      <p class="about-p reveal d2">Most Flutter codebases look fine on day one. By month three, nobody wants to touch them. I care about writing code that a teammate can read six months later and immediately understand.</p>
-      <p class="about-p reveal d2">I'm a Flutter Developer with a <strong>BSc in Information Technology</strong> from Hadhramout University (2025). Over the past year I've shipped TaskMate to Google Play, built MindTrack with a full CI/CD pipeline, and worked across multiple state management patterns — Bloc, Riverpod, GetX, Provider — in real projects.</p>
-      <p class="about-p reveal d2">I'm drawn to teams building real products where <strong>architecture decisions matter</strong> and clean code is the standard. Currently looking for remote Flutter Developer opportunities.</p>
-    </div>
-    <div class="about-cards reveal d2">
-      <div class="about-card">
-        <div class="about-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
-        <div><div class="about-card-t">Hadhramout University</div><div class="about-card-s">BSc Information Technology · 2021 – 2025</div></div>
+================================================================ -->
+<section class="section about" id="about" aria-label="About Khadija">
+  <div class="section-inner">
+    <div class="about-grid">
+
+      <div>
+        <p class="eyebrow reveal">About</p>
+        <h2 class="section-title reveal reveal-delay-1">Engineering<br>with intention.</h2>
+
+        <blockquote class="about-quote reveal reveal-delay-2">
+          Most Flutter codebases look fine on day one. By month three, nobody wants to touch them.
+        </blockquote>
+
+        <div class="about-text">
+          <p class="reveal reveal-delay-2">I care about writing code that a teammate can read six months later and immediately understand. Architecture isn't overhead — it's what separates software that grows from software that breaks.</p>
+          <p class="reveal reveal-delay-2">I'm a Flutter Developer with a <strong>BSc in Information Technology</strong> from Hadhramout University (2025). In the past year I've shipped TaskMate to Google Play, built MindTrack with a full CI/CD pipeline, and worked across multiple state management patterns — Bloc/Cubit, Riverpod, GetX, Provider — in real projects.</p>
+          <p class="reveal reveal-delay-2">Looking for a remote Flutter Developer role where architecture matters and <strong>clean code is the standard, not the exception.</strong></p>
+        </div>
       </div>
-      <div class="about-card">
-        <div class="about-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M8 5v14l11-7z"/></svg></div>
-        <div><div class="about-card-t">Published on Google Play</div><div class="about-card-s">TaskMate · Task management app</div></div>
+
+      <div class="about-cards reveal reveal-delay-2" role="list" aria-label="Background details">
+        <div class="about-card" role="listitem">
+          <div class="about-card-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6AF0" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <div>
+            <div class="about-card-title">Hadhramout University</div>
+            <div class="about-card-sub">BSc Information Technology · 2021 – 2025</div>
+          </div>
+        </div>
+        <div class="about-card" role="listitem">
+          <div class="about-card-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6AF0" stroke-width="2"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div>
+            <div class="about-card-title">Published on Google Play</div>
+            <div class="about-card-sub">TaskMate · Local-first task management</div>
+          </div>
+        </div>
+        <div class="about-card" role="listitem">
+          <div class="about-card-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6AF0" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div>
+            <div class="about-card-title">Neotech Hackathon</div>
+            <div class="about-card-sub">App Development Track · Certificate</div>
+          </div>
+        </div>
+        <div class="about-card" role="listitem">
+          <div class="about-card-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6AF0" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+          </div>
+          <div>
+            <div class="about-card-title">Open to Remote</div>
+            <div class="about-card-sub">Flutter Developer · Full-time positions</div>
+          </div>
+        </div>
       </div>
-      <div class="about-card">
-        <div class="about-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-        <div><div class="about-card-t">Neotech Hackathon</div><div class="about-card-s">App Development Track · Certificate</div></div>
-      </div>
-      <div class="about-card">
-        <div class="about-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg></div>
-        <div><div class="about-card-t">Open to Remote</div><div class="about-card-s">Flutter Developer · Full-time positions</div></div>
-      </div>
+
     </div>
   </div>
 </section>
 
-<!-- ============================================================
-     SKILLS
-============================================================ -->
-<section id="skills">
-  <div class="skills-wrap">
-    <div class="eyebrow reveal">Expertise</div>
-    <h2 class="sec-title reveal d1">The stack<br>behind the work.</h2>
-    <div class="skill-groups">
-      <div class="skill-group reveal"><div class="sg-label">Flutter Development</div><div class="sg-chips"><span class="sg-chip">Flutter</span><span class="sg-chip">Dart</span><span class="sg-chip">Responsive UI</span><span class="sg-chip">Material 3</span><span class="sg-chip">Animations</span></div></div>
-      <div class="skill-group reveal d1"><div class="sg-label">State Management</div><div class="sg-chips"><span class="sg-chip">Bloc / Cubit</span><span class="sg-chip">Riverpod</span><span class="sg-chip">GetX</span><span class="sg-chip">Provider</span></div></div>
-      <div class="skill-group reveal d2"><div class="sg-label">Architecture & Data</div><div class="sg-chips"><span class="sg-chip">Clean Architecture</span><span class="sg-chip">REST APIs</span><span class="sg-chip">Offline-first</span><span class="sg-chip">Hive</span><span class="sg-chip">SQLite</span></div></div>
-      <div class="skill-group reveal"><div class="sg-label">Backend & Storage</div><div class="sg-chips"><span class="sg-chip">Firebase</span><span class="sg-chip">Firestore</span><span class="sg-chip">Firebase Auth</span><span class="sg-chip">SharedPreferences</span></div></div>
-      <div class="skill-group reveal d1"><div class="sg-label">Engineering</div><div class="sg-chips"><span class="sg-chip">Git</span><span class="sg-chip">GitHub</span><span class="sg-chip">GitHub Actions</span><span class="sg-chip">CI/CD</span></div></div>
-      <div class="skill-group reveal d2"><div class="sg-label">UI & Visualization</div><div class="sg-chips"><span class="sg-chip">fl_chart</span><span class="sg-chip">image_picker</span><span class="sg-chip">Figma</span></div></div>
+<!-- ================================================================
+     EXPERTISE
+================================================================ -->
+<section class="section expertise" id="expertise" aria-label="Technical expertise">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="eyebrow reveal">Expertise</p>
+      <h2 class="section-title reveal reveal-delay-1">The stack<br>behind the work.</h2>
+    </div>
+
+    <div class="skill-groups" role="list">
+
+      <div class="skill-group reveal" role="listitem">
+        <div class="skill-group-label">Flutter Development</div>
+        <div class="skill-chips">
+          <span class="skill-chip">Flutter</span>
+          <span class="skill-chip">Dart</span>
+          <span class="skill-chip">Responsive UI</span>
+          <span class="skill-chip">Material 3</span>
+          <span class="skill-chip">Animations</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-1" role="listitem">
+        <div class="skill-group-label">State Management</div>
+        <div class="skill-chips">
+          <span class="skill-chip">Bloc / Cubit</span>
+          <span class="skill-chip">Riverpod</span>
+          <span class="skill-chip">GetX</span>
+          <span class="skill-chip">Provider</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-2" role="listitem">
+        <div class="skill-group-label">Architecture & Data</div>
+        <div class="skill-chips">
+          <span class="skill-chip">Clean Architecture</span>
+          <span class="skill-chip">REST APIs</span>
+          <span class="skill-chip">Offline-first</span>
+          <span class="skill-chip">Hive</span>
+          <span class="skill-chip">SQLite</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal" role="listitem">
+        <div class="skill-group-label">Backend & Storage</div>
+        <div class="skill-chips">
+          <span class="skill-chip">Firebase</span>
+          <span class="skill-chip">Firestore</span>
+          <span class="skill-chip">Firebase Auth</span>
+          <span class="skill-chip">SharedPreferences</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-1" role="listitem">
+        <div class="skill-group-label">Engineering</div>
+        <div class="skill-chips">
+          <span class="skill-chip">Git</span>
+          <span class="skill-chip">GitHub</span>
+          <span class="skill-chip">GitHub Actions</span>
+          <span class="skill-chip">CI/CD</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-2" role="listitem">
+        <div class="skill-group-label">UI & Visualization</div>
+        <div class="skill-chips">
+          <span class="skill-chip">fl_chart</span>
+          <span class="skill-chip">image_picker</span>
+          <span class="skill-chip">Figma</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- ============================================================
+<!-- ================================================================
      CONTACT
-============================================================ -->
-<section id="contact">
-  <div class="contact-wrap">
-    <div class="eyebrow reveal" style="justify-content:center">Contact</div>
-    <h2 class="contact-h reveal d1">Let's build something<br>worth shipping.</h2>
-    <p class="contact-sub reveal d2">Actively looking for Flutter Developer positions — remote preferred. If you're building something real and care about clean code, I'd love to talk.</p>
-    <div class="reveal d2" style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap">
-      <a href="mailto:khadijaalamoudi169@gmail.com" class="btn-p">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2"/><path d="M22 6l-10 7L2 6" stroke="currentColor" stroke-width="2"/></svg>
-        Send an email
-      </a>
-    </div>
-    <div class="contact-socials reveal d3">
-      <a href="https://www.linkedin.com/in/khadijaalamoudi-8226b4387" target="_blank" rel="noopener" class="contact-social">LinkedIn</a>
-      <a href="https://github.com/khadooja" target="_blank" rel="noopener" class="contact-social">GitHub</a>
-      <a href="https://www.behance.net/khadijaalamoudi" target="_blank" rel="noopener" class="contact-social">Behance</a>
+================================================================ -->
+<section class="section contact" id="contact" aria-label="Contact">
+  <div class="section-inner">
+    <div class="contact-inner">
+      <p class="eyebrow reveal" style="justify-content:center">Contact</p>
+      <h2 class="contact-heading reveal reveal-delay-1">
+        Let's build something<br>worth shipping.
+      </h2>
+      <p class="contact-sub reveal reveal-delay-2">
+        Actively looking for Flutter Developer positions — remote preferred. If you're building something real and care about clean code, I'd love to talk.
+      </p>
+      <div class="contact-btns reveal reveal-delay-2">
+        <a href="mailto:khadijaalamoudi169@gmail.com" class="btn-primary" aria-label="Send Khadija an email">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2"/><path d="M22 6l-10 7L2 6" stroke="currentColor" stroke-width="2"/></svg>
+          Send an email
+        </a>
+      </div>
+      <nav class="contact-socials reveal reveal-delay-3" aria-label="Contact links">
+        <a href="https://www.linkedin.com/in/khadijaalamoudi-8226b4387" target="_blank" rel="noopener noreferrer" class="contact-social">LinkedIn</a>
+        <a href="https://github.com/khadooja" target="_blank" rel="noopener noreferrer" class="contact-social">GitHub</a>
+        <a href="https://www.behance.net/khadijaalamoudi" target="_blank" rel="noopener noreferrer" class="contact-social">Behance</a>
+      </nav>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-brand">Khadija Alamoudi · Flutter Developer</div>
-  <div class="footer-links">
-    <a href="https://github.com/khadooja" target="_blank" rel="noopener" class="footer-link">GitHub</a>
-    <a href="https://www.linkedin.com/in/khadijaalamoudi-8226b4387" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+<!-- ================================================================
+     FOOTER
+================================================================ -->
+<footer class="footer" role="contentinfo">
+  <span class="footer-brand">Khadija Alamoudi · Flutter Developer</span>
+  <nav class="footer-links" aria-label="Footer links">
+    <a href="https://github.com/khadooja" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+    <a href="https://www.linkedin.com/in/khadijaalamoudi-8226b4387" target="_blank" rel="noopener noreferrer" class="footer-link">LinkedIn</a>
     <a href="mailto:khadijaalamoudi169@gmail.com" class="footer-link">Email</a>
-  </div>
+    <a href="https://www.behance.net/khadijaalamoudi" target="_blank" rel="noopener noreferrer" class="footer-link">Behance</a>
+  </nav>
 </footer>
 
-<!-- ============================================================
+<!-- ================================================================
      LIGHTBOX
-============================================================ -->
-<div class="lb-backdrop" id="lbBackdrop">
+================================================================ -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Project fullscreen view">
   <div class="lb-inner">
-    <button class="lb-close" id="lbClose">✕</button>
-    <div id="lbScaler" class="lb-scaler"></div>
-    <div class="lb-label" id="lbLabel"></div>
+    <button class="lb-close" id="lb-close" aria-label="Close fullscreen view">✕</button>
+    <div class="lb-scaler ms-wrap" id="lb-scaler"></div>
+    <p class="lb-caption" id="lb-caption" aria-live="polite"></p>
   </div>
 </div>
 
-<!-- ============================================================
-     JAVASCRIPT
-============================================================ -->
-<script>
-/* ── Nav scroll ── */
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), {passive:true});
-
-/* ── Active nav ── */
-const secs = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-link');
-new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting)
-      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#'+e.target.id));
-  });
-}, { rootMargin: '-40% 0px -55% 0px' }).observe(document.querySelector('#projects'));
-secs.forEach(s => new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting)
-      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#'+e.target.id));
-  });
-}, { rootMargin: '-40% 0px -55% 0px' }).observe(s));
-
-/* ── Mobile menu ── */
-document.getElementById('mobToggle').addEventListener('click', () => document.getElementById('mobMenu').classList.add('open'));
-document.getElementById('mobClose').addEventListener('click', () => document.getElementById('mobMenu').classList.remove('open'));
-document.querySelectorAll('.mob-menu a').forEach(a => a.addEventListener('click', () => document.getElementById('mobMenu').classList.remove('open')));
-
-/* ── Scroll reveal ── */
-new IntersectionObserver((entries, obs) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-}, { threshold: 0.08 }).observe(document.body) || (() => {
-  const obs = new IntersectionObserver((entries, o) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); o.unobserve(e.target); } });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
-})();
-// Simpler:
-const revObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(r => revObs.observe(r));
-
-/* ══════════════════════════════════════════════════════════════
-   MOCKUP SCALER — Core rendering logic
-   
-   Each mockup poster is 1500×980px (or 1440×940 for chat).
-   We inject an iframe into .mockup-scaler and use ResizeObserver
-   to calculate and apply the exact CSS transform scale needed
-   so the full poster fits the container with zero cropping.
-══════════════════════════════════════════════════════════════ */
-function initMockupScaler(container) {
-  const src    = container.dataset.src;
-  const isChat = container.classList.contains('chat-ratio');
-  const nativeW = isChat ? 1440 : 1500;
-  const nativeH = isChat ? 940  : 980;
-
-  // Create iframe
-  const iframe = document.createElement('iframe');
-  iframe.src           = src;
-  iframe.title         = container.dataset.title || 'App preview';
-  iframe.scrolling     = 'no';
-  iframe.loading       = 'lazy';
-  iframe.style.cssText = `
-    position:absolute; top:0; left:0;
-    width:${nativeW}px; height:${nativeH}px;
-    border:none; pointer-events:none;
-    transform-origin: top left;
-  `;
-  container.insertBefore(iframe, container.firstChild);
-
-  function scaleToFit() {
-    const containerW = container.offsetWidth;
-    const containerH = container.offsetHeight;
-    // Scale so the full nativeW × nativeH poster fills width (height will be naturally correct via padding-top ratio)
-    const scale = containerW / nativeW;
-    iframe.style.transform = `scale(${scale})`;
-  }
-
-  scaleToFit();
-  new ResizeObserver(scaleToFit).observe(container);
-  window.addEventListener('resize', scaleToFit, { passive: true });
-}
-
-document.querySelectorAll('.mockup-scaler').forEach(initMockupScaler);
-
-/* ── Lightbox ── */
-const lbBackdrop = document.getElementById('lbBackdrop');
-const lbClose    = document.getElementById('lbClose');
-const lbScaler   = document.getElementById('lbScaler');
-const lbLabel    = document.getElementById('lbLabel');
-let lbIframe     = null;
-
-function openLightbox(src, title, isChat) {
-  // Setup scaler
-  const nativeW = isChat ? 1440 : 1500;
-  const nativeH = isChat ? 940  : 980;
-  const ratio   = (nativeH / nativeW * 100).toFixed(2);
-
-  lbScaler.innerHTML = '';
-  lbScaler.className = 'lb-scaler' + (isChat ? ' chat-ratio' : '');
-  lbScaler.style.paddingTop = ratio + '%';
-
-  lbIframe = document.createElement('iframe');
-  lbIframe.src   = src;
-  lbIframe.title = title;
-  lbIframe.style.cssText = `
-    position:absolute; top:0; left:0;
-    width:${nativeW}px; height:${nativeH}px;
-    border:none; pointer-events:none;
-    transform-origin: top left;
-  `;
-  lbScaler.appendChild(lbIframe);
-  lbLabel.textContent = title + ' · Click outside or press Esc to close';
-
-  function scaleLb() {
-    const w = lbScaler.offsetWidth;
-    lbIframe.style.transform = `scale(${w / nativeW})`;
-  }
-  scaleLb();
-  new ResizeObserver(scaleLb).observe(lbScaler);
-
-  lbBackdrop.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox() {
-  lbBackdrop.classList.remove('open');
-  document.body.style.overflow = '';
-  setTimeout(() => { lbScaler.innerHTML = ''; lbIframe = null; }, 300);
-}
-
-lbClose.addEventListener('click', closeLightbox);
-lbBackdrop.addEventListener('click', e => { if (e.target === lbBackdrop) closeLightbox(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-</script>
-
+<script src="./js/main.js"></script>
 </body>
 </html>

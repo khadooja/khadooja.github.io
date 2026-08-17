@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Flutter Firebase Chat — Portfolio Mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #071019;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+    font-family: 'Roboto', -apple-system, sans-serif;
+  }
+
+  .poster {
+    position: relative;
+    width: 1440px;
+    height: 940px;
+    border-radius: 24px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(33,150,243,0.30), transparent 40%),
+      radial-gradient(circle at 92% 15%, rgba(3,169,244,0.22), transparent 42%),
+      radial-gradient(circle at 80% 95%, rgba(21,101,192,0.30), transparent 45%),
+      linear-gradient(160deg, #0b1a2b 0%, #0e2338 35%, #123056 68%, #0a3d66 100%);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+  }
+
+  /* subtle chat-bubble texture in the background, on-brand with the app's own icon */
+  .texture {
+    position: absolute;
+    inset: 0;
+    opacity: 0.05;
+    background-image:
+      radial-gradient(circle, #fff 1.5px, transparent 1.5px);
+    background-size: 26px 26px;
+    pointer-events: none;
+  }
+
+  .brand {
+    position: absolute;
+    top: 52px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 50;
+  }
+
+  .brand .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 34px;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+  }
+
+  .brand .mark .logo-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2196F3, #64B5F6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 24px rgba(33,150,243,0.5);
+  }
+
+  .brand .tagline {
+    margin-top: 9px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.2px;
+  }
+
+  .stage {
+    position: absolute;
+    top: 195px;
+    left: 0;
+    right: 0;
+    bottom: 56px;
+  }
+
+  .phone-slot {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .caption-pill {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 12.5px;
+    color: #eaf2fb;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    padding: 6px 16px;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+    white-space: nowrap;
+  }
+
+  .phone {
+    position: relative;
+    width: 218px;
+    height: 452px;
+    background: #101317;
+    border-radius: 36px;
+    padding: 7px;
+    box-shadow:
+      0 30px 60px rgba(3,10,25,0.55),
+      0 8px 20px rgba(3,10,25,0.35),
+      inset 0 0 0 2px rgba(255,255,255,0.06);
+  }
+
+  .phone.front { width: 240px; height: 498px; border-radius: 40px; }
+
+  .notch {
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 72px;
+    height: 17px;
+    background: #101317;
+    border-radius: 0 0 11px 11px;
+    z-index: 5;
+  }
+
+  .screen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #fbfbfd;
+    border-radius: 29px;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone.front .screen { border-radius: 33px; }
+
+  .statusbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 15px 0;
+    font-size: 10px;
+    font-weight: 700;
+    color: #1a1a1f;
+    flex-shrink: 0;
+  }
+  .statusbar .icons { display: flex; gap: 4px; align-items: center; }
+  .bar { width: 3px; background: currentColor; border-radius: 1px; }
+
+  /* ---------- real Material AppBar (blue, matches Colors.blue primarySwatch) ---------- */
+  .appbar {
+    background: #2196F3;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.1px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+  }
+  .appbar .spacer { width: 20px; }
+
+  /* ================= AUTH SCREENS ================= */
+  .auth-screen {
+    flex: 1;
+    background: #BBDEFB; /* colorScheme.primaryContainer, blue swatch */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 14px;
+  }
+  .auth-icon-wrap {
+    width: 54px; height: 54px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 6px;
+  }
+  .auth-card {
+    background: #fff;
+    border-radius: 10px;
+    width: 188px;
+    margin-top: 4px;
+    padding: 14px 14px 12px;
+    box-shadow: 0 6px 16px rgba(20,40,80,0.18);
+  }
+  .avatar-pick {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .avatar-circle {
+    width: 46px; height: 46px;
+    border-radius: 999px;
+    background: #BDBDBD;
+  }
+  .avatar-btn {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 9px; font-weight: 700; color: #2196F3;
+  }
+  .field-label { font-size: 9px; color: #6a6a76; margin-bottom: 3px; font-weight: 500; }
+  .auth-field {
+    border-bottom: 1.4px solid #bcc3ce;
+    padding: 4px 1px 6px;
+    margin-bottom: 9px;
+    font-size: 10.5px;
+    color: #232732;
+    font-weight: 500;
+  }
+  .auth-field.focus { border-bottom-color: #2196F3; }
+  .auth-btn {
+    background: #2196F3;
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    padding: 9px 0;
+    border-radius: 3px;
+    margin-top: 4px;
+    box-shadow: 0 6px 14px rgba(33,150,243,0.4);
+  }
+  .auth-switch {
+    text-align: center;
+    margin-top: 9px;
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #2196F3;
+  }
+
+  /* ================= CHAT SCREENS ================= */
+  .chat-body {
+    flex: 1;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .msg-list {
+    flex: 1;
+    padding: 10px 0 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2px;
+    overflow: hidden;
+  }
+  .msg-row { display: flex; position: relative; padding: 0 10px; }
+  .msg-row.me { justify-content: flex-end; }
+  .msg-row.them { justify-content: flex-start; }
+  .msg-col { display: flex; flex-direction: column; max-width: 74%; }
+  .msg-col.me { align-items: flex-end; }
+  .msg-col.them { align-items: flex-start; }
+  .msg-username { font-size: 9px; font-weight: 700; color: #1a1a1f; margin: 6px 8px 2px; }
+  .bubble {
+    padding: 7px 10px;
+    border-radius: 12px;
+    font-size: 10.5px;
+    line-height: 1.35;
+    margin: 2px 6px;
+  }
+  .bubble.me { background: #E0E0E0; color: #232732; border-top-right-radius: 3px; }
+  .bubble.them { background: #64B5F6; color: #fff; border-top-left-radius: 3px; }
+  .bubble.next { border-top-left-radius: 12px; border-top-right-radius: 12px; }
+  .avatar-mini {
+    width: 26px; height: 26px; border-radius: 999px;
+    background: linear-gradient(135deg,#90CAF9,#2196F3);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 10px; font-weight: 700;
+  }
+  .msg-with-avatar { display: flex; align-items: flex-end; gap: 6px; }
+
+  .composer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px 12px 14px;
+    border-top: 1px solid #eef0f3;
+    flex-shrink: 0;
+  }
+  .composer-input {
+    flex: 1;
+    font-size: 10.5px;
+    color: #9aa0a8;
+    border-bottom: 1.3px solid #dfe2e6;
+    padding: 6px 2px;
+  }
+  .send-btn {
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    color: #2196F3;
+  }
+
+  .empty-state {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 26px;
+  }
+  .empty-state span {
+    font-size: 11.5px;
+    color: #8a8f97;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .footer-note {
+    position: absolute;
+    bottom: 24px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="poster">
+  <div class="texture"></div>
+
+  <div class="brand">
+    <div class="mark">
+      <span class="logo-badge">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="#fff"><path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
+      </span>
+      Flutter Firebase Chat
+    </div>
+    <div class="tagline">A real‑time messaging app built with Flutter, Firebase Auth &amp; Cloud Firestore</div>
+  </div>
+
+  <div class="stage">
+
+    <!-- ===== PHONE 1: LOGIN ===== -->
+    <div class="phone-slot" style="left:15px; top:70px; transform: rotate(-8deg); z-index:2;">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="icons"><span class="bar" style="height:6px"></span><span class="bar" style="height:8px"></span><span class="bar" style="height:10px"></span></span>
+          </div>
+          <div class="auth-screen">
+            <div class="auth-icon-wrap">
+              <svg width="46" height="46" viewBox="0 0 24 24" fill="#2196F3"><path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
+            </div>
+            <div class="auth-card">
+              <div class="field-label">Email Address</div>
+              <div class="auth-field">jane.doe@email.com</div>
+              <div class="field-label">Password</div>
+              <div class="auth-field focus">••••••••</div>
+              <div class="auth-btn">LOGIN</div>
+              <div class="auth-switch">Create Account</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption-pill">Sign in · Firebase Authentication</div>
+    </div>
+
+    <!-- ===== PHONE 2: SIGN UP ===== -->
+    <div class="phone-slot" style="left:265px; top:8px; transform: rotate(-3deg); z-index:3;">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="icons"><span class="bar" style="height:6px"></span><span class="bar" style="height:8px"></span><span class="bar" style="height:10px"></span></span>
+          </div>
+          <div class="auth-screen" style="padding-top:8px;">
+            <div class="auth-card" style="margin-top:2px;">
+              <div class="avatar-pick">
+                <div class="avatar-circle"></div>
+                <div class="avatar-btn">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="#2196F3"><path d="M9 3l-1.83 2H3v2h18V5h-4.17L15 3H9zm3 6a5 5 0 100 10 5 5 0 000-10z"/></svg>
+                  Add Image
+                </div>
+              </div>
+              <div class="field-label">Username</div>
+              <div class="auth-field">janedoe</div>
+              <div class="field-label">Email Address</div>
+              <div class="auth-field">jane.doe@email.com</div>
+              <div class="field-label">Password</div>
+              <div class="auth-field focus">••••••••</div>
+              <div class="auth-btn">SIGN UP</div>
+              <div class="auth-switch" style="font-size:8.5px;">I already have an account</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption-pill">Create account · photo upload to Firebase Storage</div>
+    </div>
+
+    <!-- ===== PHONE 3: CHAT SCREEN (front, hero) ===== -->
+    <div class="phone-slot" style="left:565px; top:-24px; transform: rotate(1deg); z-index:5;">
+      <div class="phone front">
+        <div class="notch" style="width:82px;"></div>
+        <div class="screen">
+          <div class="statusbar" style="margin-top:5px;">
+            <span>9:41</span>
+            <span class="icons"><span class="bar" style="height:6px"></span><span class="bar" style="height:8px"></span><span class="bar" style="height:10px"></span></span>
+          </div>
+          <div class="appbar">
+            <span style="font-size:15px;">Chat Screen</span>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="#0f1c27"><path d="M17 7l-1.41 1.41L17.17 10H8v2h9.17l-1.58 1.59L17 15l4-4-4-4zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+          </div>
+          <div class="chat-body">
+            <div class="msg-list">
+              <div class="msg-row them">
+                <div class="msg-with-avatar">
+                  <div class="avatar-mini">M</div>
+                  <div class="msg-col them">
+                    <div class="msg-username">Mike Chen</div>
+                    <div class="bubble them">Hey! Did you check the new build?</div>
+                  </div>
+                </div>
+              </div>
+              <div class="msg-row them">
+                <div class="msg-with-avatar">
+                  <div style="width:26px;flex-shrink:0;"></div>
+                  <div class="bubble them next">Looks solid on my end 🚀</div>
+                </div>
+              </div>
+              <div class="msg-row me">
+                <div class="msg-col me">
+                  <div class="bubble me">Nice, testing sign‑up flow now</div>
+                </div>
+              </div>
+              <div class="msg-row me">
+                <div class="msg-col me">
+                  <div class="bubble me next">Firestore sync is instant 👌</div>
+                </div>
+              </div>
+            </div>
+            <div class="composer">
+              <div class="composer-input">Send a message...</div>
+              <div class="send-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#2196F3"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption-pill">Real‑time messaging · live Cloud Firestore stream</div>
+    </div>
+
+    <!-- ===== PHONE 4: EMPTY STATE ===== -->
+    <div class="phone-slot" style="left:875px; top:60px; transform: rotate(8deg); z-index:2;">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="statusbar">
+            <span>9:41</span>
+            <span class="icons"><span class="bar" style="height:6px"></span><span class="bar" style="height:8px"></span><span class="bar" style="height:10px"></span></span>
+          </div>
+          <div class="appbar">
+            <span style="font-size:14px;">Chat Screen</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#0f1c27"><path d="M17 7l-1.41 1.41L17.17 10H8v2h9.17l-1.58 1.59L17 15l4-4-4-4zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+          </div>
+          <div class="chat-body">
+            <div class="empty-state">
+              <span>No messages found.<br>Start adding some!</span>
+            </div>
+            <div class="composer">
+              <div class="composer-input">Send a message...</div>
+              <div class="send-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#2196F3"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="caption-pill">Empty state · Firestore snapshot handling</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">Flutter · Firebase Auth · Cloud Firestore · Firebase Storage</div>
+
+</div>
+
+</body>
+</html>
