@@ -2,9 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MindTrack — Portfolio Mockup</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>mindtrack mockup</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: transparent; }
+.scale-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 65.3333%;
+  overflow: hidden;
+}
+.scale-inner {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1500px;
+  height: 980px;
+  transform-origin: top left;
+}
+/* ---- original styles ---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -425,10 +442,13 @@
     color: rgba(45,43,85,0.6);
     letter-spacing: 0.3px;
   }
+/* Override body styles from original */
+body { display: block !important; align-items: unset !important; justify-content: unset !important; padding: 0 !important; }
 </style>
 </head>
 <body>
-
+<div class="scale-wrap">
+  <div class="scale-inner" id="scaleInner">
 <div class="poster">
 
   <div class="brand">
@@ -790,6 +810,19 @@
   <div class="footer-note">Flutter · Hive · Cubit (flutter_bloc) · fl_chart · OpenAI-powered mood insights</div>
 
 </div>
-
+  </div>
+</div>
+<script>
+(function() {
+  var inner = document.getElementById('scaleInner');
+  var nativeW = 1500;
+  function fit() {
+    var scale = document.documentElement.clientWidth / nativeW;
+    inner.style.transform = 'scale(' + scale + ')';
+  }
+  fit();
+  window.addEventListener('resize', fit);
+})();
+</script>
 </body>
 </html>
