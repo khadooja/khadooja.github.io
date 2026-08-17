@@ -160,11 +160,11 @@ ul { list-style: none; }
 
 /* Name — editorial serif */
 .hero-name {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-size: clamp(3.5rem, 8vw, 7rem);
-  font-weight: 400; /* Instrument Serif at 400 is its display weight */
-  letter-spacing: -0.02em; line-height: 0.95;
-  color: var(--text); margin-bottom: 0.5rem;
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(4.5rem, 10vw, 9rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.055em;
 }
 .hero-role {
   font-family: 'Instrument Serif', serif;
