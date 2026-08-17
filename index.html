@@ -639,18 +639,22 @@ footer {
       <div class="sp-content">
         <span class="sp-badge sp-badge-live">● Live on Google Play</span>
         <h3 class="sp-title">TaskMate</h3>
-        <p class="sp-desc">A full task management app shipped to production. Offline-first with cloud sync, push reminders, calendar view, and dark mode — built to be used daily.</p>
+        <p class="sp-desc">A local-first Flutter task management app designed to keep tasks, reminders, and recurring schedules reliable — fully offline, no internet required.</p>
         <ul class="sp-feats">
-          <li>Offline access — Sqflite + GetStorage</li>
-          <li>Real-time cloud sync via Firebase</li>
-          <li>Push notifications &amp; reminders</li>
-          <li>Calendar view + dark mode + animations</li>
-          <li>Task color-coding &amp; repeat scheduling</li>
+          <li>Fully offline — SQLite via sqflite + GetStorage</li>
+          <li>Recurring tasks: daily, weekly, monthly &amp; yearly</li>
+          <li>Scheduled local notifications &amp; reminders</li>
+          <li>Persistent light / dark theme</li>
+          <li>Layered architecture: domain, data, presentation</li>
+          <li>Repository abstraction — testable business logic</li>
+          <li>Unit tests + GitHub Actions CI pipeline</li>
+          <li>English &amp; Arabic localization infrastructure</li>
         </ul>
         <div class="sp-tags">
           <span class="tag">Flutter</span><span class="tag">Dart</span>
-          <span class="tag">GetX</span><span class="tag">Firebase</span>
-          <span class="tag">SQLite</span><span class="tag">GetStorage</span>
+          <span class="tag">Riverpod</span><span class="tag">SQLite</span>
+          <span class="tag">GetStorage</span><span class="tag">Local Notifications</span>
+          <span class="tag">GitHub Actions</span>
         </div>
         <div class="sp-btns">
           <a href="https://play.google.com/store/apps/details?id=com.khdooja.taskmate" target="_blank" rel="noopener" class="btn-p" style="font-size:0.82rem;padding:0.55rem 1.1rem">
