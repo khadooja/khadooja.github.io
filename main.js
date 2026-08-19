@@ -209,7 +209,7 @@ const CASE_STUDIES = {
     badge: '● Live on Google Play',
     title: 'TaskMate',
     overview: 'A local-first Flutter task management app designed to keep tasks, reminders, and recurring schedules reliable — fully offline, no internet required. Shipped and published on Google Play.',
-    mockup: { src: './assets/mockups/taskmate.html', ratio: '1500x980' },
+    mockup: { src: './taskmate.html', ratio: '1500x980' },
     features: [
       'Recurring tasks — daily, weekly, monthly & yearly',
       'Scheduled local notifications & reminders',
@@ -234,7 +234,7 @@ const CASE_STUDIES = {
     badge: '✦ Featured',
     title: 'MindTrack',
     overview: 'Mood journaling and emotional pattern tracking app, built offline-first with automated deployment via GitHub Actions CI/CD.',
-    mockup: { src: './assets/mockups/mindtrack.html', ratio: '1500x980' },
+    mockup: { src: './mindtrack.html', ratio: '1500x980' },
     features: [
       'Daily mood tracking & journaling',
       'AI-assisted mood analysis on entries',
@@ -257,7 +257,7 @@ const CASE_STUDIES = {
     badge: 'Project',
     title: 'Recipe App',
     overview: 'A Clean Architecture recipe manager focused on real UX details — favorites, empty-state handling, and optimized image loading — built with Material 3.',
-    mockup: { src: './assets/mockups/recipe.html', ratio: '1500x980' },
+    mockup: { src: './recipe.html', ratio: '1500x980' },
     features: [
       'Browse, search and favorite recipes',
       'Guided recipe creation form with validation',
@@ -280,7 +280,7 @@ const CASE_STUDIES = {
     badge: 'Project',
     title: 'Chat App',
     overview: 'Real-time messaging with Firebase Authentication and Cloud Firestore — instant sync, a full auth flow, and a clean conversational UI.',
-    mockup: { src: './assets/mockups/chat.html', ratio: '1440x940' },
+    mockup: { src: './chat.html', ratio: '1440x940' },
     features: [
       'Real-time message sync via Cloud Firestore',
       'Email/password sign up & login flow',
