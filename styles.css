@@ -1,12 +1,15 @@
-
 /* ================================================================
    KHADIJA ALAMOUDI — PORTFOLIO
    Design system: deep navy-black · indigo accent · Space Grotesk
 ================================================================ */
- 
-/* ── Fonts ── */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
- 
+
+/* Fonts are loaded once, early, via <link rel="stylesheet"> in
+   index.html's <head> (discovered immediately by the browser's
+   preload scanner). Do NOT @import them here too — a CSS @import
+   is render-blocking and serialized behind this file's own
+   download, which is barely noticeable on WiFi but adds real,
+   visible delay on higher-latency mobile networks. */
+
 /* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; -webkit-text-size-adjust: 100%; }
@@ -15,7 +18,7 @@ img, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 ul { list-style: none; }
- 
+
 /* ── Tokens ── */
 :root {
   --bg:        #0A0A0F;
@@ -40,16 +43,16 @@ ul { list-style: none; }
   --nav-h:     64px;
   --ease:      cubic-bezier(0.22, 1, 0.36, 1);
 }
- 
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: #2A2A3A; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #3A3A50; }
- 
+
 /* ── Focus visible ── */
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
- 
+
 /* ================================================================
    NAVIGATION
 ================================================================ */
@@ -91,7 +94,7 @@ ul { list-style: none; }
   transition: opacity 0.2s, transform 0.2s;
 }
 .nav-cta:hover { opacity: 0.86; transform: translateY(-1px); }
- 
+
 /* Mobile nav */
 .nav-burger {
   display: none; flex-direction: column; gap: 5px; padding: 6px;
@@ -114,7 +117,7 @@ ul { list-style: none; }
 }
 .nav-mob-link:hover { color: var(--text); }
 .nav-mob-cta { margin-top: 1.5rem; color: var(--accent) !important; font-weight: 600; }
- 
+
 /* ================================================================
    HERO
 ================================================================ */
@@ -123,7 +126,7 @@ ul { list-style: none; }
   padding: calc(var(--nav-h) + 6rem) 5% 6rem;
   position: relative; overflow: hidden;
 }
- 
+
 /* Subtle grid texture */
 .hero::before {
   content: '';
@@ -134,16 +137,16 @@ ul { list-style: none; }
   background-size: 88px 88px;
   mask-image: radial-gradient(ellipse 70% 70% at 50% 0%, black 35%, transparent 100%);
 }
- 
+
 /* Ambient glow — restrained */
 .hero-glow {
   position: absolute; z-index: 0; border-radius: 50%; filter: blur(140px); pointer-events: none;
 }
 .hero-glow-1 { width: 560px; height: 560px; top: -160px; right: -120px; background: rgba(91,106,240,0.045); }
 .hero-glow-2 { width: 300px; height: 300px; bottom: 0; left: 10%; background: rgba(91,106,240,0.03); }
- 
+
 .hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; width: 100%; }
- 
+
 /* Status badge */
 .hero-status {
   display: inline-flex; align-items: center; gap: 0.55rem;
@@ -158,7 +161,7 @@ ul { list-style: none; }
   animation: status-pulse 2.5s ease-in-out infinite;
 }
 @keyframes status-pulse { 0%,100%{box-shadow:0 0 0 3px var(--green-lo)} 50%{box-shadow:0 0 0 6px transparent} }
- 
+
 /* Name — bold, technical, formal */
 .hero-name {
   font-family: 'Space Grotesk', sans-serif;
@@ -180,7 +183,7 @@ ul { list-style: none; }
   line-height: 1.8; margin-bottom: 2.5rem;
 }
 .hero-tagline strong { color: var(--text); font-weight: 500; }
- 
+
 .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
 .btn-primary {
   display: inline-flex; align-items: center; gap: 0.45rem;
@@ -198,7 +201,7 @@ ul { list-style: none; }
   transition: border-color 0.2s, color 0.2s, transform 0.2s;
 }
 .btn-outline:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
- 
+
 .hero-bottom {
   display: flex; align-items: flex-end; justify-content: space-between;
   flex-wrap: wrap; gap: 1.5rem;
@@ -211,7 +214,7 @@ ul { list-style: none; }
 }
 .hero-social:hover { color: var(--text); }
 .hero-social svg { flex-shrink: 0; }
- 
+
 .play-badge {
   display: inline-flex; align-items: center; gap: 0.6rem;
   padding: 0.5rem 1rem 0.5rem 0.55rem;
@@ -226,7 +229,7 @@ ul { list-style: none; }
   background: rgba(34,197,94,0.15);
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
- 
+
 /* ================================================================
    STATS STRIP
 ================================================================ */
@@ -254,7 +257,7 @@ ul { list-style: none; }
 }
 .stat-num em { color: var(--accent); font-style: normal; }
 .stat-label { font-size: 0.78rem; color: var(--text-2); font-weight: 400; }
- 
+
 /* ================================================================
    SECTION COMMON
 ================================================================ */
@@ -275,7 +278,7 @@ ul { list-style: none; }
   color: var(--text); margin-bottom: 1rem;
 }
 .section-sub { font-size: 1rem; color: var(--text-2); max-width: 460px; line-height: 1.75; }
- 
+
 /* ================================================================
    MOCKUP SCALER — no-crop system
    Renders iframe at native size (1500×980 or 1440×940),
@@ -290,14 +293,14 @@ ul { list-style: none; }
 /* Intrinsic ratio via padding-top — prevents layout shift */
 .ms-wrap[data-ratio="1500x980"] { padding-top: 65.33%; }  /* 980/1500 */
 .ms-wrap[data-ratio="1440x940"] { padding-top: 65.28%; }  /* 940/1440 */
- 
+
 .ms-wrap iframe {
   position: absolute; top: 0; left: 0;
   border: none; pointer-events: none;
   transform-origin: top left;
   /* JS sets width/height and scale */
 }
- 
+
 /* Hover shimmer border */
 .ms-wrap::after {
   content: ''; position: absolute; inset: 0;
@@ -306,7 +309,7 @@ ul { list-style: none; }
   transition: border-color 0.3s;
   pointer-events: none; z-index: 5;
 }
- 
+
 /* Zoom hint */
 .ms-zoom {
   position: absolute; bottom: 12px; right: 12px; z-index: 10;
@@ -326,12 +329,12 @@ ul { list-style: none; }
 /* also show on wrap hover */
 .ms-wrap:hover .ms-zoom { opacity: 1; }
 .ms-wrap:hover::after { border-color: rgba(91,106,240,0.25); }
- 
+
 /* ================================================================
    PROJECTS
 ================================================================ */
 .projects { background: var(--bg); }
- 
+
 /* ── TaskMate — FEATURED HERO PROJECT ── */
 .proj-featured {
   margin-bottom: 5rem;
@@ -344,7 +347,7 @@ ul { list-style: none; }
   transition: border-color 0.3s;
 }
 .proj-featured-card:hover { border-color: var(--border-hi); }
- 
+
 .proj-featured-top {
   display: grid; grid-template-columns: 5fr 7fr;
   min-height: 520px;
@@ -361,7 +364,7 @@ ul { list-style: none; }
 }
 .proj-badge-live { border: 1px solid var(--green-bd); background: var(--green-lo); color: var(--green); }
 .proj-badge-feat { border: 1px solid rgba(91,106,240,0.25); background: var(--accent-lo); color: #8F99F5; }
- 
+
 .proj-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 2.25rem; font-weight: 600; letter-spacing: -0.02em;
@@ -389,7 +392,7 @@ ul { list-style: none; }
 .btn-sm-primary:hover { opacity: 0.86; transform: translateY(-1px); }
 .btn-sm-ghost { border: 1px solid var(--border-hi); color: var(--text-2); }
 .btn-sm-ghost:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
- 
+
 .proj-featured-visual {
   position: relative; background: #09090F;
   display: flex; align-items: center; justify-content: center;
@@ -399,7 +402,7 @@ ul { list-style: none; }
   width: 100%;
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
 }
- 
+
 /* ── Secondary projects grid ── */
 .proj-grid {
   display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem;
@@ -412,7 +415,7 @@ ul { list-style: none; }
   cursor: pointer;
 }
 .proj-card:hover { border-color: var(--border-hi); transform: translateY(-4px); }
- 
+
 .proj-card-visual {
   position: relative; background: #09090F;
   padding: 1.25rem 1.25rem 0;
@@ -421,7 +424,7 @@ ul { list-style: none; }
   border-radius: 10px 10px 0 0;
   box-shadow: 0 8px 30px rgba(0,0,0,0.45);
 }
- 
+
 .proj-card-body {
   padding: 1.25rem 1.25rem 1.5rem;
   display: flex; flex-direction: column; gap: 0.55rem; flex: 1;
@@ -440,7 +443,7 @@ ul { list-style: none; }
   transition: border-color 0.2s, color 0.2s, transform 0.2s;
 }
 .proj-card-link:hover { border-color: var(--accent); color: var(--text); transform: translateX(1px); }
- 
+
 /* Stack tag */
 .tag {
   font-family: 'JetBrains Mono', monospace; font-size: 0.64rem;
@@ -448,7 +451,7 @@ ul { list-style: none; }
   background: rgba(255,255,255,0.04); border: 1px solid var(--border);
   color: var(--text-3); letter-spacing: 0.02em;
 }
- 
+
 /* ── MindTrack — wide 2-col ── */
 .proj-mindtrack {
   grid-column: 1 / -1;
@@ -468,13 +471,13 @@ ul { list-style: none; }
   display: flex; align-items: flex-end;
 }
 .proj-mindtrack-visual .ms-wrap { width: 100%; }
- 
+
 /* ── Chat & Recipe as remaining 2-col cards ── */
 .proj-two-col {
   grid-column: 1 / -1;
   display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
 }
- 
+
 /* ================================================================
    ABOUT
 ================================================================ */
@@ -506,7 +509,7 @@ ul { list-style: none; }
 }
 .about-card-title { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.15rem; }
 .about-card-sub { font-size: 0.76rem; color: var(--text-2); }
- 
+
 /* ================================================================
    EXPERTISE
 ================================================================ */
@@ -531,7 +534,7 @@ ul { list-style: none; }
   transition: border-color 0.2s, color 0.2s;
 }
 .skill-chip:hover { border-color: var(--accent); color: var(--text); }
- 
+
 /* ================================================================
    CONTACT
 ================================================================ */
@@ -547,7 +550,7 @@ ul { list-style: none; }
 .contact-socials { display: flex; gap: 1.75rem; justify-content: center; }
 .contact-social { font-size: 0.84rem; color: var(--text-3); font-weight: 500; transition: color 0.2s; }
 .contact-social:hover { color: var(--text); }
- 
+
 /* ================================================================
    FOOTER
 ================================================================ */
@@ -561,7 +564,7 @@ ul { list-style: none; }
 .footer-links { display: flex; gap: 1.5rem; }
 .footer-link { font-size: 0.78rem; color: var(--text-3); transition: color 0.2s; }
 .footer-link:hover { color: var(--text); }
- 
+
 /* ================================================================
    LIGHTBOX
 ================================================================ */
@@ -599,7 +602,7 @@ ul { list-style: none; }
   font-family: 'JetBrains Mono', monospace; font-size: 0.66rem;
   color: var(--text-3); letter-spacing: 0.1em;
 }
- 
+
 /* ================================================================
    PROJECT CASE-STUDY MODAL
 ================================================================ */
@@ -651,13 +654,13 @@ ul { list-style: none; }
   letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.75rem;
 }
 .cs-overview { font-size: 0.94rem; color: var(--text-2); line-height: 1.75; }
- 
+
 .cs-visual {
   border-radius: var(--r-lg); background: #09090F; overflow: hidden;
   box-shadow: 0 20px 50px rgba(0,0,0,0.45);
   margin-bottom: 2.25rem;
 }
- 
+
 .cs-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;
   padding-top: 1.75rem; border-top: 1px solid var(--border);
@@ -677,14 +680,14 @@ ul { list-style: none; }
   content: ''; position: absolute; left: 0; top: 0.55em;
   width: 4px; height: 4px; border-radius: 50%; background: var(--accent);
 }
- 
+
 .cs-footer {
   padding-top: 1.5rem; border-top: 1px solid var(--border);
   display: flex; flex-direction: column; gap: 1.25rem;
 }
 .cs-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .cs-links { display: flex; gap: 0.6rem; flex-wrap: wrap; }
- 
+
 /* ================================================================
    TILT + SPOTLIGHT (project mockups, fine-pointer only)
 ================================================================ */
@@ -702,7 +705,7 @@ ul { list-style: none; }
   opacity: 0; transition: opacity 0.3s var(--ease);
 }
 .ms-wrap.tilt.tilt-active::before { opacity: 1; }
- 
+
 /* ================================================================
    SCROLL REVEAL
 ================================================================ */
@@ -712,7 +715,7 @@ ul { list-style: none; }
 .reveal-delay-2 { transition-delay: 0.2s; }
 .reveal-delay-3 { transition-delay: 0.3s; }
 .reveal-delay-4 { transition-delay: 0.4s; }
- 
+
 /* Hero stagger — JS controlled */
 .hero-inner > * { opacity: 0; transform: translateY(16px); }
 .hero-inner.loaded > * { opacity: 1; transform: none; }
@@ -722,13 +725,13 @@ ul { list-style: none; }
 .hero-inner.loaded > *:nth-child(4) { transition: opacity 0.6s var(--ease) 0.36s, transform 0.6s var(--ease) 0.36s; }
 .hero-inner.loaded > *:nth-child(5) { transition: opacity 0.6s var(--ease) 0.44s, transform 0.6s var(--ease) 0.44s; }
 .hero-inner.loaded > *:nth-child(6) { transition: opacity 0.6s var(--ease) 0.52s, transform 0.6s var(--ease) 0.52s; }
- 
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
 }
- 
+
 /* ================================================================
    RESPONSIVE
 ================================================================ */
