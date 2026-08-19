@@ -9,11 +9,19 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasFinePointer       = window.matchMedia('(pointer: fine)').matches;
  
+/* ── Feature support ── */
+const supportsResizeObserver      = typeof window.ResizeObserver === 'function';
+const supportsIntersectionObserver = typeof window.IntersectionObserver === 'function';
+ 
 /* ================================================================
    SHARED: SCALED IFRAME RENDERER
    Renders an iframe at native app dimensions inside a container,
    then scales it to fit via CSS transform + ResizeObserver.
    Used by inline card mockups, the lightbox, and the case-study modal.
+ 
+   Fallback: if ResizeObserver isn't available, we still scale once
+   immediately and re-scale on window resize instead — the mockup
+   still renders, it just won't auto-adjust to container-only resizes.
 ================================================================ */
 function mountScaledIframe(container, src, title, ratio) {
   const [nW, nH] = (ratio || '1500x980').split('x').map(Number);
@@ -42,27 +50,53 @@ function mountScaledIframe(container, src, title, ratio) {
     iframe.style.transform = `scale(${cw / nW})`;
   }
   scale();
-  const ro = new ResizeObserver(scale);
-  ro.observe(container);
-  return { iframe, resizeObserver: ro };
+ 
+  if (supportsResizeObserver) {
+    try {
+      const ro = new ResizeObserver(scale);
+      ro.observe(container);
+      return { iframe, resizeObserver: ro };
+    } catch (err) {
+      /* fall through to the window-resize fallback below */
+    }
+  }
+ 
+  window.addEventListener('resize', scale, { passive: true });
+  return { iframe, resizeObserver: { disconnect: () => window.removeEventListener('resize', scale) } };
 }
  
 /* Lazily mount inline card mockups — each one is a full HTML document
    with its own fonts/images, so we only load it once it's actually
    about to scroll into view. This is what keeps the page light on
-   mobile instead of firing four iframe loads on first paint. */
-const lazyMountIO = new IntersectionObserver((entries, obs) => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const wrap = entry.target;
-    mountScaledIframe(wrap, wrap.dataset.src, wrap.dataset.title, wrap.dataset.ratio);
-    obs.unobserve(wrap);
-  });
-}, { rootMargin: '600px 0px' });
+   mobile instead of firing four iframe loads on first paint.
  
-document.querySelectorAll('.ms-wrap[data-src]').forEach(wrap => {
-  lazyMountIO.observe(wrap);
-});
+   Fallback: if IntersectionObserver isn't available, mount every
+   mockup immediately instead of skipping them — a slightly heavier
+   first load beats mockups that never appear at all. */
+if (supportsIntersectionObserver) {
+  try {
+    const lazyMountIO = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const wrap = entry.target;
+        mountScaledIframe(wrap, wrap.dataset.src, wrap.dataset.title, wrap.dataset.ratio);
+        obs.unobserve(wrap);
+      });
+    }, { rootMargin: '600px 0px' });
+ 
+    document.querySelectorAll('.ms-wrap[data-src]').forEach(wrap => {
+      lazyMountIO.observe(wrap);
+    });
+  } catch (err) {
+    document.querySelectorAll('.ms-wrap[data-src]').forEach(wrap => {
+      mountScaledIframe(wrap, wrap.dataset.src, wrap.dataset.title, wrap.dataset.ratio);
+    });
+  }
+} else {
+  document.querySelectorAll('.ms-wrap[data-src]').forEach(wrap => {
+    mountScaledIframe(wrap, wrap.dataset.src, wrap.dataset.title, wrap.dataset.ratio);
+  });
+}
  
 /* ================================================================
    LIGHTBOX (quick fullscreen mockup view)
@@ -99,7 +133,7 @@ function closeLightbox() {
 if (lbClose) lbClose.addEventListener('click', closeLightbox);
 if (lb) lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && lb.classList.contains('open')) closeLightbox();
+  if (e.key === 'Escape' && lb && lb.classList.contains('open')) closeLightbox();
 });
  
 document.querySelectorAll('.ms-click-area').forEach(area => {
@@ -118,38 +152,47 @@ document.querySelectorAll('.ms-click-area').forEach(area => {
 ================================================================ */
 const nav = document.getElementById('main-nav');
  
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('stuck', window.scrollY > 24);
-}, { passive: true });
+if (nav) {
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('stuck', window.scrollY > 24);
+  }, { passive: true });
+}
  
 const sections  = document.querySelectorAll('section[id]');
 const navLinks  = document.querySelectorAll('.nav-link');
-const activeIO  = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
-    }
-  });
-}, { rootMargin: '-40% 0px -55% 0px' });
-sections.forEach(s => activeIO.observe(s));
+ 
+if (supportsIntersectionObserver) {
+  try {
+    const activeIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => activeIO.observe(s));
+  } catch (err) { /* nav active-state is cosmetic — safe to skip entirely */ }
+}
  
 const burger  = document.getElementById('nav-burger');
 const mobMenu = document.getElementById('nav-mob-menu');
  
-burger.addEventListener('click', () => {
-  const open = mobMenu.classList.toggle('open');
-  burger.classList.toggle('open', open);
-  burger.setAttribute('aria-expanded', open);
-  document.body.style.overflow = open ? 'hidden' : '';
-});
-document.querySelectorAll('.nav-mob-link').forEach(l => {
-  l.addEventListener('click', () => {
-    mobMenu.classList.remove('open');
-    burger.classList.remove('open');
-    burger.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
+if (burger && mobMenu) {
+  burger.addEventListener('click', () => {
+    const open = mobMenu.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    document.body.style.overflow = open ? 'hidden' : '';
   });
-});
+  document.querySelectorAll('.nav-mob-link').forEach(l => {
+    l.addEventListener('click', () => {
+      mobMenu.classList.remove('open');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+}
  
 /* ================================================================
    HERO ENTRANCE
@@ -165,16 +208,28 @@ window.addEventListener('DOMContentLoaded', () => {
  
 /* ================================================================
    SCROLL REVEAL
+ 
+   Fallback: if IntersectionObserver isn't available, reveal every
+   .reveal element immediately instead of leaving it at opacity:0
+   forever — visible-but-static beats permanently invisible content.
 ================================================================ */
-const revealIO = new IntersectionObserver((entries, obs) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('in');
-      obs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+if (supportsIntersectionObserver) {
+  try {
+    const revealIO = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+  } catch (err) {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  }
+} else {
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+}
  
 /* ================================================================
    PREMIUM TILT + SPOTLIGHT ON PROJECT MOCKUPS (desktop, fine pointer only)
@@ -396,4 +451,3 @@ if (cs) cs.addEventListener('click', e => { if (e.target === cs) closeCaseStudy(
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && cs && cs.classList.contains('open')) closeCaseStudy();
 });
- 
