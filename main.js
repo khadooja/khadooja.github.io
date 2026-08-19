@@ -1,13 +1,14 @@
+
 /* ================================================================
    KHADIJA ALAMOUDI PORTFOLIO — main.js
 ================================================================ */
-
+ 
 'use strict';
-
+ 
 /* ── Environment ── */
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasFinePointer       = window.matchMedia('(pointer: fine)').matches;
-
+ 
 /* ================================================================
    SHARED: SCALED IFRAME RENDERER
    Renders an iframe at native app dimensions inside a container,
@@ -16,7 +17,7 @@ const hasFinePointer       = window.matchMedia('(pointer: fine)').matches;
 ================================================================ */
 function mountScaledIframe(container, src, title, ratio) {
   const [nW, nH] = (ratio || '1500x980').split('x').map(Number);
-
+ 
   const iframe = document.createElement('iframe');
   iframe.src       = src;
   iframe.title     = title || 'App preview';
@@ -34,7 +35,7 @@ function mountScaledIframe(container, src, title, ratio) {
     transformOrigin:  'top left',
   });
   container.appendChild(iframe);
-
+ 
   function scale() {
     const cw = container.clientWidth;
     if (!cw) return;
@@ -45,12 +46,24 @@ function mountScaledIframe(container, src, title, ratio) {
   ro.observe(container);
   return { iframe, resizeObserver: ro };
 }
-
-/* Initialise all inline card mockups */
+ 
+/* Lazily mount inline card mockups — each one is a full HTML document
+   with its own fonts/images, so we only load it once it's actually
+   about to scroll into view. This is what keeps the page light on
+   mobile instead of firing four iframe loads on first paint. */
+const lazyMountIO = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const wrap = entry.target;
+    mountScaledIframe(wrap, wrap.dataset.src, wrap.dataset.title, wrap.dataset.ratio);
+    obs.unobserve(wrap);
+  });
+}, { rootMargin: '600px 0px' });
+ 
 document.querySelectorAll('.ms-wrap[data-src]').forEach(wrap => {
-  mountScaledIframe(wrap, wrap.dataset.src, wrap.dataset.title, wrap.dataset.ratio);
+  lazyMountIO.observe(wrap);
 });
-
+ 
 /* ================================================================
    LIGHTBOX (quick fullscreen mockup view)
 ================================================================ */
@@ -59,21 +72,21 @@ const lbScaler  = document.getElementById('lb-scaler');
 const lbCaption = document.getElementById('lb-caption');
 const lbClose   = document.getElementById('lb-close');
 let   lbHandle  = null;
-
+ 
 function openLightbox(src, title, ratio) {
   const [nW, nH] = (ratio || '1500x980').split('x').map(Number);
   lbScaler.innerHTML        = '';
   lbScaler.style.paddingTop = ((nH / nW) * 100).toFixed(4) + '%';
   lbCaption.textContent     = title || '';
   if (lbHandle) { lbHandle.resizeObserver.disconnect(); lbHandle = null; }
-
+ 
   lbHandle = mountScaledIframe(lbScaler, src, title, ratio);
-
+ 
   lb.classList.add('open');
   document.body.style.overflow = 'hidden';
   lbClose.focus();
 }
-
+ 
 function closeLightbox() {
   lb.classList.remove('open');
   document.body.style.overflow = '';
@@ -82,13 +95,13 @@ function closeLightbox() {
     if (lbHandle) { lbHandle.resizeObserver.disconnect(); lbHandle = null; }
   }, 280);
 }
-
+ 
 if (lbClose) lbClose.addEventListener('click', closeLightbox);
 if (lb) lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && lb.classList.contains('open')) closeLightbox();
 });
-
+ 
 document.querySelectorAll('.ms-click-area').forEach(area => {
   area.addEventListener('click', () => {
     const wrap = area.closest('.ms-wrap');
@@ -99,16 +112,16 @@ document.querySelectorAll('.ms-click-area').forEach(area => {
     if (wrap.dataset.src) openLightbox(wrap.dataset.src, wrap.dataset.title, wrap.dataset.ratio);
   });
 });
-
+ 
 /* ================================================================
    NAVIGATION
 ================================================================ */
 const nav = document.getElementById('main-nav');
-
+ 
 window.addEventListener('scroll', () => {
   nav.classList.toggle('stuck', window.scrollY > 24);
 }, { passive: true });
-
+ 
 const sections  = document.querySelectorAll('section[id]');
 const navLinks  = document.querySelectorAll('.nav-link');
 const activeIO  = new IntersectionObserver(entries => {
@@ -119,10 +132,10 @@ const activeIO  = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-40% 0px -55% 0px' });
 sections.forEach(s => activeIO.observe(s));
-
+ 
 const burger  = document.getElementById('nav-burger');
 const mobMenu = document.getElementById('nav-mob-menu');
-
+ 
 burger.addEventListener('click', () => {
   const open = mobMenu.classList.toggle('open');
   burger.classList.toggle('open', open);
@@ -137,7 +150,7 @@ document.querySelectorAll('.nav-mob-link').forEach(l => {
     document.body.style.overflow = '';
   });
 });
-
+ 
 /* ================================================================
    HERO ENTRANCE
 ================================================================ */
@@ -149,7 +162,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-
+ 
 /* ================================================================
    SCROLL REVEAL
 ================================================================ */
@@ -162,7 +175,7 @@ const revealIO = new IntersectionObserver((entries, obs) => {
   });
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
-
+ 
 /* ================================================================
    PREMIUM TILT + SPOTLIGHT ON PROJECT MOCKUPS (desktop, fine pointer only)
    Subtle 3D tilt following the cursor, plus a soft light that
@@ -173,16 +186,16 @@ if (!prefersReducedMotion && hasFinePointer) {
   const tiltTargets = document.querySelectorAll(
     '.proj-featured-visual .ms-wrap, .proj-mindtrack-visual .ms-wrap, .proj-card-visual .ms-wrap'
   );
-
+ 
   tiltTargets.forEach(el => {
     el.classList.add('tilt');
     let raf = null;
-
+ 
     el.addEventListener('mousemove', e => {
       const rect = el.getBoundingClientRect();
       const px = (e.clientX - rect.left) / rect.width;   // 0 → 1
       const py = (e.clientY - rect.top)  / rect.height;  // 0 → 1
-
+ 
       if (raf) cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const rx = (0.5 - py) * MAX_TILT;
@@ -192,7 +205,7 @@ if (!prefersReducedMotion && hasFinePointer) {
         el.style.setProperty('--my', `${py * 100}%`);
       });
     });
-
+ 
     el.addEventListener('mouseenter', () => el.classList.add('tilt-active'));
     el.addEventListener('mouseleave', () => {
       el.classList.remove('tilt-active');
@@ -200,7 +213,7 @@ if (!prefersReducedMotion && hasFinePointer) {
     });
   });
 }
-
+ 
 /* ================================================================
    PROJECT CASE-STUDY MODAL
 ================================================================ */
@@ -298,7 +311,7 @@ const CASE_STUDIES = {
     ],
   },
 };
-
+ 
 const cs         = document.getElementById('cs');
 const csClose    = document.getElementById('cs-close');
 const csBadge    = document.getElementById('cs-badge');
@@ -311,7 +324,7 @@ const csStack    = document.getElementById('cs-stack');
 const csLinks    = document.getElementById('cs-links');
 let   csHandle   = null;
 let   csLastFocused = null;
-
+ 
 function fillList(el, items) {
   el.innerHTML = '';
   items.forEach(text => {
@@ -320,26 +333,26 @@ function fillList(el, items) {
     el.appendChild(li);
   });
 }
-
+ 
 function openCaseStudy(id) {
   const data = CASE_STUDIES[id];
   if (!data || !cs) return;
-
+ 
   csLastFocused = document.activeElement;
-
+ 
   csBadge.textContent    = data.badge;
   csTitle.textContent    = data.title;
   csOverview.textContent = data.overview;
-
+ 
   const [mw, mh] = data.mockup.ratio.split('x').map(Number);
   csVisual.innerHTML        = '';
   csVisual.style.paddingTop = ((mh / mw) * 100).toFixed(4) + '%';
   if (csHandle) { csHandle.resizeObserver.disconnect(); csHandle = null; }
   csHandle = mountScaledIframe(csVisual, data.mockup.src, data.title, data.mockup.ratio);
-
+ 
   fillList(csFeatures, data.features);
   fillList(csArch, data.architecture);
-
+ 
   csStack.innerHTML = '';
   data.stack.forEach(t => {
     const span = document.createElement('span');
@@ -347,7 +360,7 @@ function openCaseStudy(id) {
     span.textContent = t;
     csStack.appendChild(span);
   });
-
+ 
   csLinks.innerHTML = '';
   data.links.forEach(l => {
     const a = document.createElement('a');
@@ -358,12 +371,12 @@ function openCaseStudy(id) {
     a.textContent = l.label;
     csLinks.appendChild(a);
   });
-
+ 
   cs.classList.add('open');
   document.body.style.overflow = 'hidden';
   csClose.focus();
 }
-
+ 
 function closeCaseStudy() {
   if (!cs) return;
   cs.classList.remove('open');
@@ -374,7 +387,7 @@ function closeCaseStudy() {
   }, 300);
   if (csLastFocused && typeof csLastFocused.focus === 'function') csLastFocused.focus();
 }
-
+ 
 document.querySelectorAll('[data-case]').forEach(trigger => {
   trigger.addEventListener('click', () => openCaseStudy(trigger.dataset.case));
 });
@@ -383,3 +396,4 @@ if (cs) cs.addEventListener('click', e => { if (e.target === cs) closeCaseStudy(
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && cs && cs.classList.contains('open')) closeCaseStudy();
 });
+ 
