@@ -12,8 +12,8 @@
 <meta property="og:url" content="https://khadooja.github.io">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
 
@@ -94,12 +94,12 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
           GitHub
         </a>
-        <span aria-hidden="true" style="color:var(--border-hi)">·</span>
+        <span aria-hidden="true" style="color:var(--text-3)">·</span>
         <a href="https://www.linkedin.com/in/khadijaalamoudi-8226b4387" target="_blank" rel="noopener noreferrer" class="hero-social">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
           LinkedIn
         </a>
-        <span aria-hidden="true" style="color:var(--border-hi)">·</span>
+        <span aria-hidden="true" style="color:var(--text-3)">·</span>
         <a href="https://www.behance.net/khadijaalamoudi" target="_blank" rel="noopener noreferrer" class="hero-social">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029H23.726zm-7.726-3h3.543c-.094-1.74-1.254-2.344-1.823-2.344-.833 0-1.582.582-1.72 2.344zM8 11.979c.001 1.338-.41 2.678-1.895 2.678-.958 0-1.806-.479-1.908-2.678H8zm0-2.979H4.233c.194-1.586 1.01-2.678 1.808-2.678C7.615 6.322 8 7.413 8 9zm0 8H2V5h5.5c1.5 0 3.5.662 3.5 3.5 0 1.5-.5 2.5-1.5 3C11 12.5 11.5 13.5 11.5 15c0 3-2 3-3.5 3z"/></svg>
           Behance
@@ -170,7 +170,11 @@
               <li class="proj-hl">Fully offline — SQLite via sqflite</li>
               <li class="proj-hl">Recurring tasks: daily, weekly, monthly &amp; yearly</li>
               <li class="proj-hl">Scheduled local notifications &amp; reminders</li>
+              <li class="proj-hl">Light / dark theme persistence</li>
               <li class="proj-hl">Domain · data · presentation layer separation</li>
+              <li class="proj-hl">Repository abstraction for testable business logic</li>
+              <li class="proj-hl">Unit tests + GitHub Actions CI</li>
+              <li class="proj-hl">English &amp; Arabic localization infrastructure</li>
             </ul>
             <div class="proj-stack" aria-label="Technologies used">
               <span class="tag">Flutter</span>
@@ -194,28 +198,27 @@
                  class="btn-sm btn-sm-ghost" aria-label="View TaskMate source on GitHub">
                 GitHub
               </a>
-              <button class="btn-sm btn-sm-ghost" data-case="taskmate" aria-label="Open TaskMate case study">
-                Case study →
-              </button>
             </div>
           </div>
 
           <!-- Mockup -->
           <div class="proj-featured-visual" aria-label="TaskMate app visual">
-            <div class="ms-wrap"
-                 data-src="./taskmate.html"
-                 data-ratio="1500x980"
-                 data-title="TaskMate"
-                 data-case="taskmate"
-                 role="img"
-                 aria-label="TaskMate application UI preview">
-              <button class="ms-click-area"
-                      aria-label="Open TaskMate case study">
-              </button>
-              <span class="ms-zoom" aria-hidden="true">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
-                Case study
-              </span>
+            <div class="parallax-inner">
+              <div class="ms-wrap"
+                   data-src="./assets/mockups/taskmate.html"
+                   data-ratio="1500x980"
+                   data-title="TaskMate"
+                   role="img"
+                   aria-label="TaskMate application UI preview">
+                <button class="ms-click-area"
+                        aria-label="View TaskMate mockup fullscreen"
+                        onclick="openLightbox('./assets/mockups/taskmate.html','TaskMate','1500x980')">
+                </button>
+                <span class="ms-zoom" aria-hidden="true">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
+                  View fullscreen
+                </span>
+              </div>
             </div>
           </div>
 
@@ -236,7 +239,9 @@
             <li class="proj-hl">Daily mood tracking &amp; journaling</li>
             <li class="proj-hl">Weekly analytics with fl_chart</li>
             <li class="proj-hl">Offline-first architecture — Hive</li>
-            <li class="proj-hl">Clean Architecture · CI/CD via GitHub Actions</li>
+            <li class="proj-hl">Cubit state management</li>
+            <li class="proj-hl">CI/CD via GitHub Actions</li>
+            <li class="proj-hl">Clean Architecture</li>
           </ul>
           <div class="proj-stack" style="margin-top:0.25rem">
             <span class="tag">Flutter</span><span class="tag">Cubit</span>
@@ -247,7 +252,7 @@
             <a href="https://www.behance.net/gallery/251583607/MindTrack-AI-Powered-Mood-Journaling-App"
                target="_blank" rel="noopener noreferrer"
                class="btn-sm btn-sm-primary"
-               style="background:#7C6FCD;box-shadow:none"
+               style="background:#7C6FCD;color:#fff;box-shadow:0 2px 8px rgba(124,111,205,0.30)"
                aria-label="View MindTrack on Behance">
               ✦ Behance
             </a>
@@ -257,26 +262,23 @@
                aria-label="View MindTrack source on GitHub">
               GitHub
             </a>
-            <button class="btn-sm btn-sm-ghost" data-case="mindtrack" aria-label="Open MindTrack case study">
-              Case study →
-            </button>
           </div>
         </div>
 
         <div class="proj-mindtrack-visual" aria-label="MindTrack app visual">
           <div class="ms-wrap"
-               data-src="./mindtrack.html"
+               data-src="./assets/mockups/mindtrack.html"
                data-ratio="1500x980"
                data-title="MindTrack"
-               data-case="mindtrack"
                role="img"
                aria-label="MindTrack application UI preview">
             <button class="ms-click-area"
-                    aria-label="Open MindTrack case study">
+                    aria-label="View MindTrack mockup fullscreen"
+                    onclick="openLightbox('./assets/mockups/mindtrack.html','MindTrack','1500x980')">
             </button>
             <span class="ms-zoom" aria-hidden="true">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
-              Case study
+              View fullscreen
             </span>
           </div>
         </div>
@@ -289,18 +291,18 @@
         <article class="proj-card reveal" aria-label="Recipe App project">
           <div class="proj-card-visual">
             <div class="ms-wrap"
-                 data-src="./recipe.html"
+                 data-src="./assets/mockups/recipe.html"
                  data-ratio="1500x980"
                  data-title="Recipe App"
-                 data-case="recipe"
                  role="img"
                  aria-label="Recipe App UI preview">
               <button class="ms-click-area"
-                      aria-label="Open Recipe App case study">
+                      aria-label="View Recipe App mockup fullscreen"
+                      onclick="openLightbox('./assets/mockups/recipe.html','Recipe App','1500x980')">
               </button>
               <span class="ms-zoom" aria-hidden="true">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
-                Case study
+                Fullscreen
               </span>
             </div>
           </div>
@@ -313,28 +315,27 @@
             </div>
             <div class="proj-card-links">
               <a href="https://github.com/khadooja/recipe_app" target="_blank" rel="noopener noreferrer" class="proj-card-link" aria-label="View Recipe App on GitHub">GitHub →</a>
-              <a href="https://www.behance.net/khadijaalamoudi" target="_blank" rel="noopener noreferrer" class="proj-card-link" style="border-color:rgba(255,107,53,0.2);color:#ff8a5c" aria-label="View Recipe App design on Behance">Behance →</a>
-              <button class="proj-card-link" data-case="recipe" aria-label="Open Recipe App case study">Case study →</button>
+              <a href="https://www.behance.net/khadijaalamoudi" target="_blank" rel="noopener noreferrer" class="proj-card-link" style="border-color:rgba(180,80,20,0.22);color:#b45014" aria-label="View Recipe App design on Behance">Behance →</a>
             </div>
           </div>
         </article>
 
         <!-- Chat App -->
         <article class="proj-card reveal reveal-delay-1" aria-label="Chat App project">
-          <div class="proj-card-visual" style="background:#06101A">
+          <div class="proj-card-visual">
             <div class="ms-wrap"
-                 data-src="./chat.html"
+                 data-src="./assets/mockups/chat.html"
                  data-ratio="1440x940"
                  data-title="Chat App"
-                 data-case="chat"
                  role="img"
                  aria-label="Chat App UI preview">
               <button class="ms-click-area"
-                      aria-label="Open Chat App case study">
+                      aria-label="View Chat App mockup fullscreen"
+                      onclick="openLightbox('./assets/mockups/chat.html','Chat App','1440x940')">
               </button>
               <span class="ms-zoom" aria-hidden="true">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/></svg>
-                Case study
+                Fullscreen
               </span>
             </div>
           </div>
@@ -347,7 +348,6 @@
             </div>
             <div class="proj-card-links">
               <a href="https://github.com/khadooja/AppChat" target="_blank" rel="noopener noreferrer" class="proj-card-link" aria-label="View Chat App on GitHub">GitHub →</a>
-              <button class="proj-card-link" data-case="chat" aria-label="Open Chat App case study">Case study →</button>
             </div>
           </div>
         </article>
@@ -552,42 +552,6 @@
   </div>
 </div>
 
-<!-- ================================================================
-     PROJECT CASE-STUDY MODAL
-================================================================ -->
-<div class="cs" id="cs" role="dialog" aria-modal="true" aria-labelledby="cs-title">
-  <div class="cs-inner">
-    <button class="cs-close" id="cs-close" aria-label="Close case study">✕</button>
-    <div class="cs-scroll">
-
-      <div class="cs-header">
-        <span class="cs-badge" id="cs-badge"></span>
-        <h3 class="cs-title" id="cs-title"></h3>
-        <p class="cs-overview" id="cs-overview"></p>
-      </div>
-
-      <div class="cs-visual ms-wrap" id="cs-visual"></div>
-
-      <div class="cs-grid">
-        <div class="cs-col">
-          <h4 class="cs-col-label">Key features</h4>
-          <ul class="cs-list" id="cs-features"></ul>
-        </div>
-        <div class="cs-col">
-          <h4 class="cs-col-label">Technical decisions</h4>
-          <ul class="cs-list" id="cs-arch"></ul>
-        </div>
-      </div>
-
-      <div class="cs-footer">
-        <div class="cs-stack" id="cs-stack" aria-label="Technologies used"></div>
-        <div class="cs-links" id="cs-links" aria-label="Project links"></div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<script src="./main.js"></script>
+<script src="./js/main.js"></script>
 </body>
 </html>
