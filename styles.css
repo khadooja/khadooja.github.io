@@ -314,8 +314,9 @@ ul { list-style: none; }
 
 /* ================================================================
    MOCKUP SCALER
-   iframe rendered at native size then CSS-scaled to fit.
-   padding-top enforces correct aspect ratio. Zero crop.
+   Two modes:
+   1. Standard (cards): padding-top ratio keeps correct aspect
+   2. Featured/fill: iframe covers the container completely (object-fit:cover style)
 ================================================================ */
 .ms-wrap {
   position: relative; width: 100%; overflow: hidden;
@@ -323,8 +324,16 @@ ul { list-style: none; }
   background: var(--card-2);
   border: 1px solid var(--border);
 }
+/* Standard ratio containers */
 .ms-wrap[data-ratio="1500x980"] { padding-top: 65.33%; }
 .ms-wrap[data-ratio="1440x940"] { padding-top: 65.28%; }
+
+/* Featured fill mode — no padding-top, stretches to parent height */
+.ms-wrap.ms-fill {
+  padding-top: 0 !important;
+  position: absolute; inset: 0;
+  border-radius: 0; border: none;
+}
 
 .ms-wrap iframe {
   position: absolute; top: 0; left: 0;
@@ -332,17 +341,17 @@ ul { list-style: none; }
   transform-origin: top left;
 }
 
-/* Hover accent border */
-.ms-wrap::after {
+/* Hover accent border — only on standard wraps */
+.ms-wrap:not(.ms-fill)::after {
   content: ''; position: absolute; inset: 0;
   border-radius: inherit;
   border: 1.5px solid transparent;
   transition: border-color 0.25s;
   pointer-events: none; z-index: 5;
 }
-.ms-wrap:hover::after { border-color: var(--accent); }
+.ms-wrap:not(.ms-fill):hover::after { border-color: var(--accent); }
 
-/* Zoom hint — dark pill on light bg */
+/* Zoom hint */
 .ms-zoom {
   position: absolute; bottom: 12px; right: 12px; z-index: 10;
   display: flex; align-items: center; gap: 0.35rem;
@@ -380,7 +389,7 @@ ul { list-style: none; }
 
 .proj-featured-top {
   display: grid; grid-template-columns: 5fr 7fr;
-  min-height: 520px;
+  min-height: 620px;
 }
 .proj-featured-info {
   padding: 3rem; display: flex; flex-direction: column; gap: 1.25rem;
@@ -428,28 +437,32 @@ ul { list-style: none; }
 .btn-sm-ghost { border: 1px solid var(--border-hi); color: var(--text-2); background: var(--card); }
 .btn-sm-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
 
-/* Mockup panel — fills the right column completely, mockup bleeds to edges */
+/* Mockup panel — poster fills entire right column */
 .proj-featured-visual {
   position: relative;
   background: var(--card-2);
-  display: flex; align-items: stretch;
   overflow: hidden;
-  min-height: 520px;
+  min-height: 620px;
 }
 .proj-featured-visual .parallax-inner {
-  width: 100%; display: flex; align-items: center;
+  position: absolute; inset: 0;
   transition: transform 0.4s var(--ease);
   will-change: transform;
 }
+/* Override ratio padding — featured uses fill mode */
 .proj-featured-visual .ms-wrap {
+  position: absolute; inset: 0;
   width: 100%; height: 100%;
-  border-radius: 0;          /* flush to panel edges */
-  border: none;              /* no inner border — panel border handles it */
-  box-shadow: none;          /* clean, no floating shadow inside */
+  padding-top: 0 !important;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  background: var(--card-2);
 }
-/* Keep the zoom hint */
-.proj-featured-visual .ms-zoom {
-  bottom: 16px; right: 16px;
+.proj-featured-visual .ms-wrap iframe {
+  position: absolute;
+  top: 0; left: 0;
+  transform-origin: top left;
 }
 
 /* ── Secondary grid ── */
