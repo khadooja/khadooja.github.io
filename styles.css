@@ -753,3 +753,31 @@ ul { list-style: none; }
   .footer { flex-direction: column; text-align: center; }
   .footer-links { justify-content: center; }
 }
+
+
+/* ================================================================
+   ADDITIONS — Wazan card, hero badges, Experience
+================================================================ */
+.play-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.proj-badges { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.proj-title-ar {
+  font-family: 'Cairo', 'Inter', sans-serif; font-size: 0.62em; font-weight: 700;
+  color: var(--text-3); margin-inline-start: 0.35rem; letter-spacing: 0;
+}
+.experience { background: var(--card); border-top: 1px solid var(--border); }
+.exp-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 2rem 2.25rem; box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column; gap: 1.1rem; max-width: 820px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.exp-card:hover { border-color: var(--border-hi); box-shadow: var(--shadow-md); }
+.exp-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+.exp-role { font-family: 'Instrument Serif', serif; font-size: 1.7rem; font-weight: 400; letter-spacing: -0.02em; color: var(--text); line-height: 1.1; }
+.exp-org { font-size: 0.86rem; color: var(--text-2); margin-top: 0.3rem; }
+.exp-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.04em;
+  padding: 0.25rem 0.65rem; border-radius: 999px;
+  border: 1px solid var(--accent-md); background: var(--accent-lo); color: var(--accent);
+}
+@media (max-width: 760px) { .exp-card { padding: 1.5rem; } }

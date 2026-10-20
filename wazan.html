@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wazan — Portfolio Mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { background: #0b141c; font-family: 'Inter', -apple-system, sans-serif; }
+
+  .poster {
+    position: relative;
+    width: 860px;
+    height: 1040px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 14% 20%, rgba(61,122,160,0.55), transparent 45%),
+      radial-gradient(circle at 90% 85%, rgba(217,165,91,0.22), transparent 40%),
+      linear-gradient(170deg, #35607f 0%, #1d3547 38%, #0f1b26 100%);
+  }
+
+  .brand {
+    position: absolute; top: 50px; left: 0; right: 0; text-align: center; z-index: 5;
+  }
+  .brand .mark {
+    display: inline-flex; align-items: center; gap: 16px;
+    font-family: 'Cairo', sans-serif; font-weight: 800; font-size: 50px;
+    color: #f4f7fa; letter-spacing: -0.5px;
+  }
+  .brand .mark .ar { font-size: 54px; }
+  .brand .mark .sep { width: 2px; height: 38px; background: #d9a55b; border-radius: 2px; }
+  .brand .mark .en { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 44px; color: #d9e6f0; }
+  .brand .tagline {
+    margin-top: 10px; font-weight: 600; font-size: 19px; color: #a9c0d1; letter-spacing: 0.3px;
+  }
+
+  .stage { position: absolute; top: 175px; left: 0; right: 0; bottom: 0; }
+
+  .slot {
+    position: absolute; display: flex; flex-direction: column; align-items: center; gap: 22px;
+  }
+  .slot.left   { left: 40px;  top: 80px; z-index: 1; }
+  .slot.center { left: 290px; top: 0; z-index: 2; }
+  .slot.right  { left: 590px; top: 80px; z-index: 1; }
+
+  .phone {
+    background: #0a0d10; border-radius: 46px; padding: 9px;
+    box-shadow: 0 40px 70px rgba(0,0,0,0.45), 0 0 0 1.5px rgba(255,255,255,0.10) inset;
+  }
+  .phone img { display: block; border-radius: 38px; width: 100%; height: auto; }
+  .slot.center .phone { width: 280px; }
+  .slot.left .phone, .slot.right .phone { width: 230px; opacity: 0.97; }
+
+  .caption {
+    font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 18px; color: #f4f7fa;
+    background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.14);
+    padding: 6px 18px; border-radius: 999px; backdrop-filter: blur(6px);
+  }
+
+  .chips {
+    position: absolute; left: 0; right: 0; bottom: 34px;
+    display: flex; justify-content: center; gap: 8px; z-index: 5; flex-wrap: wrap; padding: 0 30px;
+  }
+  .chip {
+    font-size: 13px; font-weight: 600; color: #cfe0ec; letter-spacing: 0.2px;
+    padding: 7px 14px; border-radius: 999px;
+    border: 1px solid rgba(217,165,91,0.45); background: rgba(217,165,91,0.10);
+  }
+</style>
+</head>
+<body>
+  <div class="poster">
+
+    <div class="brand">
+      <div class="mark"><span class="ar">وزان</span><span class="sep"></span><span class="en">Wazan</span></div>
+      <div class="tagline">Multi-currency budgeting · Offline-first · Arabic RTL</div>
+    </div>
+
+    <div class="stage">
+      <div class="slot left">
+        <div class="phone"><img src="./assets/wazan-add.jpg" alt="Add transaction screen"></div>
+        <div class="caption">سجّل مصروفك بثوانٍ</div>
+      </div>
+
+      <div class="slot center">
+        <div class="phone"><img src="./assets/wazan-home.jpg" alt="Home dashboard with multi-currency accounts"></div>
+        <div class="caption">كل أموالك في مكان واحد</div>
+      </div>
+
+      <div class="slot right">
+        <div class="phone"><img src="./assets/wazan-transactions.jpg" alt="Transactions list with filters"></div>
+        <div class="caption">كل عملية بالتفصيل</div>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="chip">Flutter</span>
+      <span class="chip">Riverpod</span>
+      <span class="chip">Drift · SQLite</span>
+      <span class="chip">Clean Architecture</span>
+      <span class="chip">YER · SAR · USD</span>
+    </div>
+
+  </div>
+</body>
+</html>

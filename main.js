@@ -58,6 +58,10 @@ function initMockupScaler(wrap) {
          so the top of the poster (with app UI) is always visible */
       const s = Math.max(scaleW, scaleH);
       iframe.style.transform = `scale(${s})`;
+      /* Optional: centre the poster horizontally (data-center="true") */
+      if (wrap.dataset.center === 'true') {
+        iframe.style.left = Math.min(0, (cw - nW * s) / 2) + 'px';
+      }
     } else {
       /* RATIO MODE: scale to container width, height follows ratio */
       const cw = wrap.clientWidth;
